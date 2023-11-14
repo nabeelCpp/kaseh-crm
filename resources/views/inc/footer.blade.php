@@ -1,6 +1,6 @@
 <footer>
     <div class="pull-right">
-      {{ config('app.name') }} - CRM by <a href="#">M Nabeel Arshad</a>
+      {{ config('app.name') }} - CRM
     </div>
     <div class="clearfix"></div>
   </footer>

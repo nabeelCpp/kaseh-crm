@@ -152,7 +152,9 @@ class UserController extends Controller
         // if user image is updated
         if ($request->hasFile('image')) {
             // Delete the old file
-            Storage::delete($user->image);
+            if($user->image) {
+                Storage::delete($user->image);
+            }
             // Store the new file
             $path = $request->file('image')->store('uploads/users');
 

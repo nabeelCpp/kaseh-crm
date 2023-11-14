@@ -1,6 +1,6 @@
 <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
     <div class="menu_section">
-      <h3>General</h3>
+      <h3 class="badge-success p-2 text-center">{{ auth()->user()->getRoleNames()[0] }}</h3>
       <ul class="nav side-menu">
         <li><a href="{{ route('home') }}"><i class="fa fa-home"></i> Dashboard</a></li>
         @canany(['user-list', 'user-create', 'user-edit', 'user-delete'])
@@ -24,6 +24,18 @@
                     @endcan
                     @can('role-create')
                         <li><a href="{{ route('roles.create') }}">Create Role</a></li>
+                    @endcan
+                </ul>
+            </li>
+        @endcanany
+        @canany(['patient-list', 'patient-create','patient-edit','patient-delete'])
+            <li><a><i class="fa fa-bed"></i>Patients <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                    @can('patient-list')
+                        <li><a href="{{ route('patients.index') }}">Manage patients</a></li>
+                    @endcan
+                    @can('patient-create')
+                        <li><a href="{{ route('patients.create') }}">Create patient</a></li>
                     @endcan
                 </ul>
             </li>
@@ -88,10 +100,10 @@
                 <a><i class="fa fa-sitemap"></i> {{ __('Payments') }} <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
                     @can('payments-list')
-                        <li><a href="#">{{ __('Manage Customers Payments') }}</a></li>
+                        <li><a href="#">{{ __('Manage Payments') }}</a></li>
                     @endcan
                     @can('payments-create')
-                        <li><a href="#">{{ __('Create Customers Payment') }}</a></li>
+                        <li><a href="#">{{ __('Create Payment') }}</a></li>
                     @endcan
                 </ul>
             </li>

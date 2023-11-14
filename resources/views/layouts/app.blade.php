@@ -28,7 +28,7 @@
             <!-- menu profile quick info -->
             <div class="profile clearfix">
               <div class="profile_pic">
-                <img src="{{ url('') }}/images/img.jpg" alt="..." class="img-circle profile_img">
+                <img src="@if (!Auth::user()->image) {{ asset("storage/uploads/users/user.png") }} @else {{ asset("storage/".Auth::user()->image) }} @endif" alt="Profile image" class="img-circle profile_img">
               </div>
               <div class="profile_info">
                 <span>Welcome,</span>
@@ -65,6 +65,7 @@
                   <div class="col-md-12 col-sm-12  ">
                       <div class="x_panel">
                           <div class="x_content">
+                            @include('inc.alert')
                             @yield('content')
                         </div>
                     </div>

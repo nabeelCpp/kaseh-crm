@@ -50,6 +50,12 @@ class PermissionTableSeeder extends Seeder
            'appointments-edit',
            'appointments-delete',
 
+
+           'patient-list',
+           'patient-create',
+           'patient-edit',
+           'patient-delete',
+
            'scheduling',
            'settings',
         ];

@@ -16,11 +16,6 @@
 </div>
 
 
-@if ($message = Session::get('success'))
-<div class="alert alert-success">
-  {{ $message }}
-</div>
-@endif
 
 <hr>
 <table class="table table-striped table-bordered dt-responsive nowrap" id="usersTable">
