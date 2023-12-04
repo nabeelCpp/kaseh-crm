@@ -28,14 +28,14 @@
                 </ul>
             </li>
         @endcanany
-        @canany(['patient-list', 'patient-create','patient-edit','patient-delete'])
-            <li><a><i class="fa fa-bed"></i>Patients <span class="fa fa-chevron-down"></span></a>
+        @canany(['customer-list', 'customer-create','customer-edit','customer-delete'])
+            <li><a><i class="fa fa-bed"></i>Customers <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                    @can('patient-list')
-                        <li><a href="{{ route('patients.index') }}">Manage patients</a></li>
+                    @can('customer-list')
+                        <li><a href="{{ route('customers.index') }}">Manage Customers</a></li>
                     @endcan
-                    @can('patient-create')
-                        <li><a href="{{ route('patients.create') }}">Create patient</a></li>
+                    @can('customer-create')
+                        <li><a href="{{ route('customers.create') }}">Create Customer</a></li>
                     @endcan
                 </ul>
             </li>
