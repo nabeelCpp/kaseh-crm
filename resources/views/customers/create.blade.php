@@ -17,6 +17,7 @@
 
     {{-- {!! Form::open(array('route' => 'users.store','method'=>'POST')) !!} --}}
     {!! Form::open(array('route' => 'customers.store', 'method' => 'POST', 'enctype' => 'multipart/form-data')) !!}
+    {{ csrf_field() }}
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-4">
             <div class="form-group">
@@ -86,13 +87,95 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <strong>I/C</strong>
+                                {!! Form::text('general_info[ic]', null, array('placeholder' => 'IC','class' => 'form-control', 'required' => true)) !!}
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <strong>Nationality</strong>
+                                {!! Form::text('general_info[nationality]', null, array('placeholder' => 'Nationality','class' => 'form-control', 'required' => true)) !!}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <strong>Passport</strong>
+                                {!! Form::text('general_info[passport]', null, array('placeholder' => 'Passport','class' => 'form-control', 'required' => true)) !!}
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <strong>Occupation</strong>
+                                {!! Form::text('general_info[occupation]', null, array('placeholder' => 'Occupation','class' => 'form-control', 'required' => true)) !!}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <strong>Website</strong>
+                                {!! Form::text('general_info[website]', null, array('placeholder' => 'Website','class' => 'form-control', 'required' => true)) !!}
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-6">
+                          <div class="form-group">
+                              <strong>Deceased</strong><br>
+                              {!! Form::checkbox('general_info[deceased]', '1', false, array()) !!}
+                          </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <strong>Marital Status</strong>
+                                {!! Form::select('general_info[marital]', $marital, null, ['class' => 'form-control', 'required' => true]) !!}
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-6">
+                        <div class="form-group">
+                        <strong>Deceased Date</strong>
+                        {!! Form::date('decease_date', null, array('placeholder' => 'Deceased Date','class' => 'form-control')) !!}
+                    </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <div class="form-group">
+                                <strong>Notes</strong>
+                                {!! Form::textarea('notes', null, ['class' => 'form-control','style' => 'height: 100px;']) !!}
+                            </div>
+                        </div>
+                    </div>
                     See Customers portal from source website and fill input fields accordingly.
                   </div>
                   <div class="tab-pane fade" id="privateinfo" role="tabpanel" aria-labelledby="privateinfo-tab">
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 ">Caregiver Responsibilities</label>
                         <div class="col-md-9 col-sm-9 ">
-                            <textarea class="resizable_textarea form-control" required></textarea>
+                            <textarea class="resizable_textarea form-control" name="caregiver_responsibilities" required></textarea><br>
+                        </div><br>
+                    </div><br>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 ">Caregiver Requirements</label>
+                        <div class="col-md-9 col-sm-9 ">
+                            <textarea class="resizable_textarea form-control" name="caregiver_requirements" required></textarea><br>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 ">Notes</label>
+                        <div class="col-md-9 col-sm-9 ">
+                            <textarea class="resizable_textarea form-control" name="caregiver_notes" required></textarea><br>
+                        </div><br>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 ">Raferral Code Signup</label>
+                        <div class="col-md-9 col-sm-9 ">
+                            <textarea class="resizable_textarea form-control" name="caregiver_referrel_code" required></textarea>
                         </div>
                     </div>
                     See Customers portal from source website and fill input fields accordingly.

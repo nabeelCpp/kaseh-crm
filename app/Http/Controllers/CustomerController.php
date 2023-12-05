@@ -88,7 +88,16 @@ class CustomerController extends Controller
             "male" => "Male",
             "female" => "Female"
         ];
-        return view('customers.create',compact('title', 'sex'));
+        $marital = [
+            "" => "Select Gender",
+            "single" => "Single",
+            "married" => "Married",
+            "divorced" => "Divorced",
+            "widow" => "Widow",
+            "widower" => "Widower"
+
+        ];
+        return view('customers.create',compact('title', 'sex','marital'));
     }
 
     /**
@@ -126,6 +135,7 @@ class CustomerController extends Controller
 
     public function store(Request $request) {
         // do store code here.
+        dd($request);
     }
 
     /**
