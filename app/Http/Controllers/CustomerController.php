@@ -148,7 +148,7 @@ class CustomerController extends Controller
 
     public function store(Request $request) {
         // do store code here.
-        dd($request);
+        dd($request->all());
     }
 
     /**
