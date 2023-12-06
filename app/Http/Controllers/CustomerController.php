@@ -97,7 +97,20 @@ class CustomerController extends Controller
             "widower" => "Widower"
 
         ];
-        return view('customers.create',compact('title', 'sex','marital'));
+        $natureCare = [
+            "" => "Select Gender",
+            "TLC(Elderly Care)" => "TLC(Elderly Care)",
+            "TLC(Recovery Care)" => "TLC(Recovery Care)",
+            "Babbysitting" => "Babbysitting",
+            "confinement" => "confinement",
+            "Cancer stage 1" => "Care Stage 1",
+            "Cancer stage 2" => "Care Stage 2",
+            "care stage 3"  => "Care Stage 3",
+            "TLC(Post_op Care)" => "TLC(Post_op Care)",
+            "pilliative Care" => "pilliative Care",
+            "ALzehimer/Parkinson" => "ALzehimer/Parkinson",
+        ];
+        return view('customers.create',compact('title', 'sex','marital','natureCare'));
     }
 
     /**
