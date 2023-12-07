@@ -119,45 +119,28 @@ class CustomerController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    // public function store(Request $request) : RedirectResponse
-    // {
-    //     $this->validate($request, [
-    //         'name' => 'required',
-    //         'blood_group' => 'required',
-    //         'disease' => 'required',
-    //         'age' => 'required|integer',
-    //         'user_id' => 'required',
-    //         'relation' => 'required'
-    //     ]);
+    public function store(Request $request) : RedirectResponse
+    {
+        $this->validate($request, [
+            'first_name' => 'required',
+            'last_name' => 'required'
+        ]);
 
-    //     try {
-    //         DB::beginTransaction();
-    //         $input = $request->all();
-    //         Patient::create($input);
+        try {
+            DB::beginTransaction();
+            $userId = auth()->id();
+            $input = $request->all();
+            $input['user_id'] = $userId;
+            Customer::create($input);
+            DB::commit();
+            return redirect()->route('customers.index')
+                            ->with('success','Customer created successfully');
 
-    //         DB::commit();
-
-    //         return redirect()->route('patients.index')
-    //                         ->with('success','Patient created successfully');
-
-    //     } catch (\Throwable $th) {
-    //         //throw $th;
-    //         DB::rollBack();
-    //         return redirect()->back()->withInput()->with('error', $th->getMessage());
-    //     }
-
-
-    // }
-
-    public function store(Request $request) {
-        // do store code here.
-        // dd($request->all());
-        $userId = auth()->id();
-        $input = $request->all();
-        $input['user'] = $userId;
-        $Customer = Customer::create($input);
-        return redirect()->route('customers.create')
-                        ->with('success','Customer created successfully');
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollBack();
+            return redirect()->back()->withInput()->with('error', $th->getMessage());
+        }
     }
 
     /**
@@ -173,17 +156,71 @@ class CustomerController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id) : View
     {
-        //
+        $customer = Customer::find($id);
+        $sex = [
+            "" => "Select Gender",
+            "male" => "Male",
+            "female" => "Female"
+        ];
+        $marital = [
+            "" => "Select Gender",
+            "single" => "Single",
+            "married" => "Married",
+            "divorced" => "Divorced",
+            "widow" => "Widow",
+            "widower" => "Widower"
+
+        ];
+        $natureCare = [
+            "" => "Select Gender",
+            "TLC(Elderly Care)" => "TLC(Elderly Care)",
+            "TLC(Recovery Care)" => "TLC(Recovery Care)",
+            "Babbysitting" => "Babbysitting",
+            "confinement" => "confinement",
+            "Cancer stage 1" => "Care Stage 1",
+            "Cancer stage 2" => "Care Stage 2",
+            "care stage 3"  => "Care Stage 3",
+            "TLC(Post_op Care)" => "TLC(Post_op Care)",
+            "pilliative Care" => "pilliative Care",
+            "ALzehimer/Parkinson" => "ALzehimer/Parkinson",
+        ];
+        $title = "Edit Customer [{$customer->first_name} {$customer->last_name}]";
+        return view('customers.edit',compact('customer', 'title', 'sex','marital','natureCare'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id): RedirectResponse
     {
-        //
+        $this->validate($request, [
+            'first_name' => 'required',
+            'last_name' => 'required'
+        ]);
+
+        $input = $request->all();
+
+        $user = Customer::find($id);
+
+        // if user image is updated
+        // if ($request->hasFile('image')) {
+        //     // Delete the old file
+        //     if($user->image) {
+        //         Storage::delete($user->image);
+        //     }
+        //     // Store the new file
+        //     $path = $request->file('image')->store('uploads/users');
+
+
+        //     // Update the file_path in the database
+        //     $input['image'] = $path;
+        // }
+
+        $user->update($input);
+        return redirect()->route('customers.index')
+                        ->with('success','Customer updated successfully');
     }
 
     /**

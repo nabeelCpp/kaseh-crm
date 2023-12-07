@@ -27,7 +27,7 @@
            <td>{{ ++$key }}</td>
            <td>
                 <div class="row">
-           
+
                     <div class="col-sm-9">
                         {{ $customer->first_name }}
                     </div>
@@ -38,13 +38,11 @@
            {{ $customer->last_name }}
             </td>
            <td>
-              <a class="btn btn-info btn-sm" href="{{ route('customers.show',$customer->id) }}">Show</a>
-              <a class="btn btn-primary btn-sm" href="{{ route('users.edit',$customer->id) }}">Edit</a>
-              @if ($customer->id != 1)
-                   {!! Form::open(['method' => 'DELETE','route' => ['customers.destroy', $customer->id],'style'=>'display:inline']) !!}
-                       {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-sm']) !!}
-                   {!! Form::close() !!}
-              @endif
+                <a class="btn btn-info btn-sm" href="{{ route('customers.show',$customer->id) }}">Show</a>
+                <a class="btn btn-primary btn-sm" href="{{ route('customers.edit',$customer->id) }}">Edit</a>
+                {!! Form::open(['method' => 'DELETE','route' => ['customers.destroy', $customer->id],'style'=>'display:inline']) !!}
+                    {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-sm']) !!}
+                {!! Form::close() !!}
            </td>
          </tr>
         @endforeach

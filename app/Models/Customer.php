@@ -65,7 +65,7 @@ class Customer extends Model
         'emergency_cf_city',
         'emergency_cf_zip',
         'emergency_cf_state',
-        'user',
+        'user_id',
         'emergency_cf_country',
         'emergency_cf_geo_latitude',
         'emergency_cf_longitude',
