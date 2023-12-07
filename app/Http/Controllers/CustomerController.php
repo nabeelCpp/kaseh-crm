@@ -6,6 +6,8 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\User;
+use App\Models\Customer;
 use PhpParser\Node\Stmt\TryCatch;
 use Spatie\Permission\Models\Role;
 
@@ -33,7 +35,8 @@ class CustomerController extends Controller
     {
         $title = 'Customers Management';
         $dataTable = true;
-        return view('customers.index',compact('title', 'dataTable'));
+        $data = Customer::all();
+        return view('customers.index',compact('data','title', 'dataTable'));
     }
 
     /**
@@ -148,7 +151,13 @@ class CustomerController extends Controller
 
     public function store(Request $request) {
         // do store code here.
-        dd($request->all());
+        // dd($request->all());
+        $userId = auth()->id();
+        $input = $request->all();
+        $input['user'] = $userId;
+        $Customer = Customer::create($input);
+        return redirect()->route('customers.create')
+                        ->with('success','Customer created successfully');
     }
 
     /**
@@ -156,7 +165,9 @@ class CustomerController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $customer = Customer::find($id);
+        $title = "Show Customer({$customer->first_name})";
+        return view('customers.show',compact('customer', 'title'));
     }
 
     /**
@@ -180,6 +191,8 @@ class CustomerController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Customer::find($id)->delete();
+        return redirect()->route('customers.index')
+                        ->with('success','Customer deleted successfully');
     }
 }

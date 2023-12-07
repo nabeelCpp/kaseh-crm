@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
-
+use App\Models\Customer;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
@@ -48,5 +48,10 @@ class User extends Authenticatable
 
     public function patients() {
         return $this->hasMany(Patient::class);
+    }
+
+    public function customers()
+    {
+        return $this->hasMany(Customer::class);
     }
 }

@@ -15,13 +15,41 @@
     <thead>
         <tr>
           <th>No</th>
-          <th>Name</th>
-          <th>Phone</th>
-          <th>Email</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <!-- <th>Email</th> -->
           <th width="280px">Action</th>
         </tr>
     </thead>
     <tbody>
+        @foreach ($data as $key => $customer)
+         <tr>
+           <td>{{ ++$key }}</td>
+           <td>
+                <div class="row">
+           
+                    <div class="col-sm-9">
+                        {{ $customer->first_name }}
+                    </div>
+
+                </div>
+            </td>
+            <td>
+           {{ $customer->last_name }}
+            </td>
+           <td>
+              <a class="btn btn-info btn-sm" href="{{ route('customers.show',$customer->id) }}">Show</a>
+              <a class="btn btn-primary btn-sm" href="{{ route('users.edit',$customer->id) }}">Edit</a>
+              @if ($customer->id != 1)
+                   {!! Form::open(['method' => 'DELETE','route' => ['customers.destroy', $customer->id],'style'=>'display:inline']) !!}
+                       {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-sm']) !!}
+                   {!! Form::close() !!}
+              @endif
+           </td>
+         </tr>
+        @endforeach
+    </tbody>
+    <!-- <tbody>
         <tr>
             <th>1</th>
             <td>Customer 1</td>
@@ -37,7 +65,7 @@
                 <a class="btn btn-danger btn-sm" href="#">Delete</a>
              </td>
         </tr>
-    </tbody>
+    </tbody> -->
 </table>
 
 
