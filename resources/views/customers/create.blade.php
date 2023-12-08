@@ -19,12 +19,12 @@
     {!! Form::open(array('route' => 'customers.store', 'method' => 'POST', 'enctype' => 'multipart/form-data')) !!}
     {{ csrf_field() }}
     <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-4">
+        <!-- <div class="col-xs-12 col-sm-12 col-md-4">
             <div class="form-group">
                 <strong>Image</strong>
                 {!! Form::file('image', null, array('class' => 'form-control')) !!}
             </div>
-        </div>
+        </div> -->
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="field item form-group">
                 <label class="col-form-label col-md-2 col-sm-2 ">First Name<span class="required">*</span></label>
