@@ -91,6 +91,16 @@ class CustomerController extends Controller
             "male" => "Male",
             "female" => "Female"
         ];
+        $races = [
+            "" => "Select Race",
+            "indian" => "indian",
+            "chinese" => "chinese",
+            "Pakistani" => "Pakistani",
+            "Malaysian" => "Malaysian",
+            "Arabic" => "Arabic",
+            "British" => "British"
+
+        ];
         $marital = [
             "" => "Select Gender",
             "single" => "Single",
@@ -102,18 +112,13 @@ class CustomerController extends Controller
         ];
         $natureCare = [
             "" => "Select Gender",
-            "TLC(Elderly Care)" => "TLC(Elderly Care)",
-            "TLC(Recovery Care)" => "TLC(Recovery Care)",
-            "Babbysitting" => "Babbysitting",
-            "confinement" => "confinement",
-            "Cancer stage 1" => "Care Stage 1",
-            "Cancer stage 2" => "Care Stage 2",
-            "care stage 3"  => "Care Stage 3",
+            "post stroke" => "post stroke",
+            "Dementia care" => "Dementia care",
+            "Cancer Care"  => "Cancer Care",
             "TLC(Post_op Care)" => "TLC(Post_op Care)",
-            "pilliative Care" => "pilliative Care",
             "ALzehimer/Parkinson" => "ALzehimer/Parkinson",
         ];
-        return view('customers.create',compact('title', 'sex','marital','natureCare'));
+        return view('customers.create',compact('title', 'sex','marital','natureCare','races'));
     }
 
     /**
@@ -164,6 +169,16 @@ class CustomerController extends Controller
             "male" => "Male",
             "female" => "Female"
         ];
+        $races = [
+            "" => "Select Race",
+            "indian" => "indian",
+            "chinese" => "chinese",
+            "Pakistani" => "Pakistani",
+            "Malaysian" => "Malaysian",
+            "Arabic" => "Arabic",
+            "British" => "British"
+
+        ];
         $marital = [
             "" => "Select Gender",
             "single" => "Single",
@@ -175,19 +190,14 @@ class CustomerController extends Controller
         ];
         $natureCare = [
             "" => "Select Gender",
-            "TLC(Elderly Care)" => "TLC(Elderly Care)",
-            "TLC(Recovery Care)" => "TLC(Recovery Care)",
-            "Babbysitting" => "Babbysitting",
-            "confinement" => "confinement",
-            "Cancer stage 1" => "Care Stage 1",
-            "Cancer stage 2" => "Care Stage 2",
-            "care stage 3"  => "Care Stage 3",
+            "post stroke" => "post stroke",
+            "Dementia care" => "Dementia care",
+            "Cancer Care"  => "Cancer Care",
             "TLC(Post_op Care)" => "TLC(Post_op Care)",
-            "pilliative Care" => "pilliative Care",
             "ALzehimer/Parkinson" => "ALzehimer/Parkinson",
         ];
         $title = "Edit Customer [{$customer->first_name} {$customer->last_name}]";
-        return view('customers.edit',compact('customer', 'title', 'sex','marital','natureCare'));
+        return view('customers.edit',compact('customer', 'title', 'sex','marital','natureCare','races'));
     }
 
     /**
