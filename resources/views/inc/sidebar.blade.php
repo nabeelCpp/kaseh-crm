@@ -40,6 +40,18 @@
                 </ul>
             </li>
         @endcanany
+        @canany(['caregiver-list', 'caregiver-create','caregiver-edit','caregiver-delete'])
+            <li><a><i class="fa fa-user-md"></i>Caregiver <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                    @can('caregiver-list')
+                        <li><a href="{{ route('caregivers.index') }}">Manage Caregiver</a></li>
+                    @endcan
+                    @can('caregiver-create')
+                        <li><a href="{{ route('caregivers.create') }}">Create Caregiver</a></li>
+                    @endcan
+                </ul>
+            </li>
+        @endcanany
         @canany(['product-list', 'product-create', 'product-edit', 'product-delete'])
             <li><a><i class="fa fa-table"></i> Products <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">

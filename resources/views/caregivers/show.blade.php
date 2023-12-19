@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-right">
-            <a class="btn btn-primary" href="{{ route('customers.index') }}"> Back</a>
+            <a class="btn btn-primary" href="{{ route('caregivers.index') }}"> Back</a>
         </div>
     </div>
 </div>
@@ -40,7 +40,7 @@
         <div class="col-xs-12 col-sm-12 col-md-4">
             <div class="form-group">
                 <strong>ID/SNN CAREID</strong>
-                {{ $customer->snn }}</div>
+                {{ $customer->ic_number }}</div>
             </div>
         </div>
         <div class="col-md-12 col-sm-12  ">
@@ -52,13 +52,13 @@
                         <div class="col-xs-12 col-sm-12 col-md-6">
                             <div class="form-group col-md-6 col-sm-6">
                                 <strong>Sex</strong>
-                               {{ $customer->general_info_sex }}
+                               {{ $customer->gender }}
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-6">
                             <div class="form-group">
                                 <strong>Race</strong>
-                                {{ $customer->general_info_race }}
+                                {{ $customer->nationality }}
                             </div>
                         </div>
                     </div>
@@ -72,64 +72,16 @@
                         <div class="col-xs-12 col-sm-12 col-md-6">
                             <div class="form-group">
                                 <strong>Marital Status</strong>
-                                {{$customer->general_info_marital}}
+                                {{$customer->marital_status}}
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-6">
                             <div class="form-group">
-                                <strong>Occupation</strong>
-                                {{$customer->general_info_occupation}}
+                                <strong>Profession</strong>
+                                {{$customer->profession}}
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <!-- <div class="col-xs-12 col-sm-12 col-md-6">
-                            <div class="form-group">
-                                <strong>I/C</strong>
-                                {{ $customer->general_info_ic}}
-                            </div>
-                        </div> -->
-                        <div class="col-xs-12 col-sm-12 col-md-6">
-                            <div class="form-group">
-                                <strong>Notes</strong>
-                                {{$customer->general_info_notes}}
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-6">
-                            <div class="form-group">
-                                <strong>Nationality</strong>
-                                {{ $customer->general_info_nationality}}
-                            </div>
-                        </div>
-                    </div>
-                    <!-- <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-6">
-                            <div class="form-group">
-                                <strong>Website</strong>
-                                {{$customer->general_info_website}}
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-6">
-                          <div class="form-group">
-                              <strong>Deceased</strong>
-                              {{$customer->general_info_website}}
-                          </div>
-                      </div>
-                    </div> -->
-                    <!-- <div class="row"> -->
-                        <!-- <div class="col-xs-12 col-sm-12 col-md-6">
-                            <div class="form-group">
-                                <strong>Marital Status</strong>
-                                {{$customer->general_info_marital}}
-                            </div>
-                        </div> -->
-                        <!-- <div class="col-xs-12 col-sm-12 col-md-6">
-                        <div class="form-group">
-                        <strong>Deceased Date</strong>
-                        {{$customer->general_info_decease_date}}
-                        </div>
-                            </div> -->
-                    <!-- </div> -->
                     <!-- <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-12">
                             <div class="form-group">
@@ -169,14 +121,14 @@
                     <div class="row">
                           <div class="col-xs-12 col-sm-12 col-md-6">
                             <div class="form-group">
-                                <strong>Address</strong>
-                                {{$customer->contact_info_address}}
+                                <strong>Address 1</strong>
+                                {{$customer->address_one}}
                             </div>
                           </div>
                           <div class="col-xs-12 col-sm-12 col-md-6">
                             <div class="form-group">
-                            <strong>Phone</strong>
-                            {{$customer->contact_info_phone}}
+                            <strong>Address 2</strong>
+                            {{$customer->address_two}}
                             </div>
                           </div>
                       </div>
@@ -184,27 +136,13 @@
                           <div class="col-xs-12 col-sm-12 col-md-6">
                             <div class="form-group">
                                 <strong>City</strong>
-                                {{$customer->contact_info_city}}
+                                {{$customer->city}}
                             </div>
                           </div>
                           <div class="col-xs-12 col-sm-12 col-md-6">
                             <div class="form-group">
                             <strong>State</strong>
-                            {{$customer->contact_info_state}}
-                            </div>
-                          </div>
-                      </div>
-                      <div class="row">
-                          <div class="col-xs-12 col-sm-12 col-md-6">
-                            <div class="form-group">
-                                <strong>Zip</strong>
-                                {{$customer->contact_info_zip}}
-                            </div>
-                          </div>
-                          <div class="col-xs-12 col-sm-12 col-md-6">
-                            <div class="form-group">
-                            <strong>Country</strong>
-                            {{$customer->contact_info_country}}
+                            {{$customer->state}}
                             </div>
                           </div>
                       </div>
@@ -212,7 +150,7 @@
                           <div class="col-xs-12 col-sm-12 col-md-6">
                             <div class="form-group">
                                 <strong>Mobile</strong>
-                                {{$customer->contact_info_mobile}}
+                                {{$customer->mobile}}
                             </div>
                           </div>
                           <!-- <div class="col-xs-12 col-sm-12 col-md-6">
@@ -226,15 +164,65 @@
                           <div class="col-xs-12 col-sm-12 col-md-6">
                             <div class="form-group">
                                 <strong>Email</strong>
-                                {{$customer->contact_info_email}}
+                                {{$customer->email}}
                             </div>
                           </div>
-                          <!-- <div class="col-xs-12 col-sm-12 col-md-6">
+                      </div>
+                      <div class="row">
+                          <div class="col-xs-12 col-sm-12 col-md-6">
                             <div class="form-group">
-                            <strong>Geo Latitude</strong>
-                            {{$customer->contact_info_latitude}}
+                                <strong>Cardholder</strong>
+                                {{$customer->bank_cardholder}}
                             </div>
-                          </div> -->
+                          </div>
+                          <div class="col-xs-12 col-sm-12 col-md-6">
+                            <div class="form-group">
+                            <strong>Xeio ID</strong>
+                            {{$customer->xero_id}}
+                            </div>
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-xs-12 col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <strong>Bank Account</strong>
+                                {{$customer->bank_account}}
+                            </div>
+                          </div>
+                          <div class="col-xs-12 col-sm-12 col-md-6">
+                            <div class="form-group">
+                            <strong>Bank Name</strong>
+                            {{$customer->bank_name}}
+                            </div>
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-xs-12 col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <strong>Passport</strong>
+                                {{$customer->passport}}
+                            </div>
+                          </div>
+                          <div class="col-xs-12 col-sm-12 col-md-6">
+                            <div class="form-group">
+                            <strong>Visa</strong>
+                            {{$customer->visa}}
+                            </div>
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-xs-12 col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <strong>Date Of Pasport Expiry</strong>
+                                {{$customer->passport_expiry_date}}
+                            </div>
+                          </div>
+                          <div class="col-xs-12 col-sm-12 col-md-6">
+                            <div class="form-group">
+                            <strong>Visa Expiry Date</strong>
+                            {{$customer->visa_expiry_date}}
+                            </div>
+                          </div>
                       </div>
                       <!-- <div class="row">
                           <div class="col-xs-12 col-sm-12 col-md-6">
@@ -253,92 +241,7 @@
                     </div>
                   <!-- <div class="tab-pane fade" id="emergency" role="tabpanel" aria-labelledby="emergency-tab"> -->
                    <!-- <h2 style="color:black">Emergency Contact Information</h2> -->
-                   <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-6">
-                          <div class="form-group">
-                              <strong>First Name</strong>
-                              {{$customer->emergencyfname}}
-                          </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-6">
-                          <div class="form-group">
-                          <strong>Phone</strong>
-                          {{$customer->emergency_phone}}
-                          </div>
-                        </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-6">
-                          <div class="form-group">
-                              <strong>Last Name</strong>
-                              {{$customer->emergency_lname}}
-                          </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-6">
-                          <div class="form-group">
-                          <strong>Mobile</strong>
-                          {{$customer->emergency_mobile}}
-                          </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-6">
-                          <div class="form-group">
-                              <strong>Address</strong>
-                              {{$customer->emergency_address}}
-                          </div>
-                        </div>
-                        <!-- <div class="col-xs-12 col-sm-12 col-md-6">
-                          <div class="form-group">
-                          <strong>FAX</strong>
-                          {{$customer->emergency_fax}}
-                          </div>
-                        </div> -->
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-6">
-                          <div class="form-group">
-                              <strong>Email</strong>
-                              {{$customer->emergency_email}}
-                          </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-6">
-                          <div class="form-group">
-                          <strong>Relation</strong>
-                          {{$customer->emergency_relation}}
-                          </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-6">
-                          <div class="form-group">
-                              <strong>City</strong>
-                              {{$customer->emergency_city}}
-                          </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-6">
-                          <div class="form-group">
-                          <strong>State</strong>
-                          {{$customer->	emergency_state}}
-                          </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-6">
-                          <div class="form-group">
-                              <strong>Zip</strong>
-                              {{$customer->emergency_zip}}
-                          </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-6">
-                          <div class="form-group">
-                          <strong>Country</strong>
-                          {{$customer->emergency_country}}
-                          </div>
-                        </div>
-                    </div>
 
                     <!-- <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-6">
@@ -362,7 +265,7 @@
                           </div>
                         </div>
                     </div> -->
-                    <hr>
+                    
                    <!-- <h2 style="color:black">Closest Family Member Information</h2>
                    <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-6">
@@ -477,50 +380,23 @@
 
                   <!-- <div class="tab-pane fade" id="care" role="tabpanel" aria-labelledby="care-tab"> -->
                   <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 ">Current Medical Situation</label>
+                        <label class="control-label col-md-3 col-sm-3 ">Internal Remarks</label>
                         <div class="col-md-9 col-sm-9 ">
-                            <textarea class="resizable_textarea form-control" name="care_medical_situation" >{{$customer->care_medical_situation}}</textarea><br>
+                            <textarea class="resizable_textarea form-control" name="skills" >{{$customer->skills}}</textarea><br>
                         </div><br>
                     </div><br>
                     <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 ">Medical History</label>
+                        <label class="control-label col-md-3 col-sm-3 ">Biography</label>
                         <div class="col-md-9 col-sm-9 ">
-                            <textarea class="resizable_textarea form-control" name="care_medical_history" >{{$customer->care_medical_history}}</textarea><br>
+                            <textarea class="resizable_textarea form-control" name="internal_remarks" >{{$customer->internal_remarks}}</textarea><br>
                         </div><br>
                     </div><br>
                     <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 ">Surgical History</label>
+                        <label class="control-label col-md-3 col-sm-3 ">Where We find Caregiver ?</label>
                         <div class="col-md-9 col-sm-9 ">
-                            <textarea class="resizable_textarea form-control" name="care_Surgical_History" >{{$customer->care_Surgical_History}}</textarea><br>
+                            <textarea class="resizable_textarea form-control" name="how_find_caregiver" >{{$customer->how_find_caregiver}}</textarea><br>
                         </div><br>
                     </div><br>
-                    <div class="form-group">
-                                <strong>Nature Of Care</strong>
-                                {{$customer->care_care_nature}}
-                            </div>
-                  <!-- </div> -->
-                <!-- </div> -->
-              <!-- </div> -->
-            <!-- </div> -->
           </div>
-
-        <!-- <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-            <button type="submit" class="btn btn-primary" id="submit">Submit</button>
-        </div> -->
     </div>
-
-<!-- <div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="form-group">
-            <strong>First Name:</strong>
-            {{ $customer->first_name }}
-        </div>
-    </div>
-    <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="form-group">
-            <strong>Last Name:</strong>
-            {{ $customer->last_name }}
-        </div>
-    </div>
-</div> -->
 @endsection

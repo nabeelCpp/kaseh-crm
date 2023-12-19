@@ -58,6 +58,16 @@ class PermissionTableSeeder extends Seeder
 
            'scheduling',
            'settings',
+
+           'customer-list',
+           'customer-create',
+           'customer-edit',
+           'customer-delete',
+
+           'caregiver-list',
+           'caregiver-create',
+           'caregiver-edit',
+           'caregiver-delete'
         ];
 
         foreach ($permissions as $permission) {
