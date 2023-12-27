@@ -67,7 +67,12 @@ class PermissionTableSeeder extends Seeder
            'caregiver-list',
            'caregiver-create',
            'caregiver-edit',
-           'caregiver-delete'
+           'caregiver-delete',
+           
+           'invoices-list',
+           'invoices-create',
+           'invoices-edit',
+           'invoices-delete'
         ];
 
         foreach ($permissions as $permission) {

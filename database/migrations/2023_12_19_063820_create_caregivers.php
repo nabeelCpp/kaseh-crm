@@ -49,6 +49,9 @@ return new class extends Migration
                 $table->string('xero_id')->nullable();
                 $table->string('internal_remarks')->nullable();
                 $table->string('skills')->nullable();
+                $table->string('height')->nullable()->after('skills');
+                $table->string('weight')->nullable()->after('height');
+                $table->string('trainer')->nullable()->after('weight');
                 $table->timestamps();
             });
         });

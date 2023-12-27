@@ -66,6 +66,18 @@
                 {!! Form::text('ic_number', null, array('placeholder' => 'IC Number','class' => 'form-control')) !!}
             </div>
         </div>
+        <div class="col-xs-12 col-sm-12 col-md-4">
+            <div class="form-group">
+                <strong>Height</strong>
+                {!! Form::text('height', null, array('placeholder' => 'Height','class' => 'form-control')) !!}
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-4">
+            <div class="form-group">
+                <strong>Weight</strong>
+                {!! Form::text('weight', null, array('placeholder' => 'Weight','class' => 'form-control')) !!}
+            </div>
+        </div>
 
         <div class="col-xs-12 col-sm-12 col-md-4">
             <div class="form-group">
@@ -119,10 +131,16 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="col-xs-12 col-sm-12 col-md-6">
                            <div class="form-group">
                                 <strong>Gender</strong>
                                 {!! Form::select('gender', $sex, null, ['class' => 'form-control']) !!}
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-6">
+                           <div class="form-group">
+                                <strong>Are You Certified Trainer?</strong>
+                                {!! Form::select('trainer', $tranier, null, ['class' => 'form-control']) !!}
                             </div>
                         </div>
                     </div>
@@ -145,7 +163,7 @@
                         <div class="col-xs-12 col-sm-12 col-md-6">
                           <div class="form-group">
                               <strong>Profession</strong>
-                              {!! Form::text('profession', null, array('placeholder' => 'Profession','class' => 'form-control')) !!}
+                              {!! Form::select('profession', $professionals, null, ['class' => 'form-control']) !!}
                           </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-6">

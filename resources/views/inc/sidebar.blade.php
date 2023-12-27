@@ -52,6 +52,18 @@
                 </ul>
             </li>
         @endcanany
+        @canany(['invoices-list', 'invoices-create','invoices-edit','invoices-delete'])
+            <li><a><i class="fa fa-user-md"></i>Invoices <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                    @can('invoices-list')
+                        <li><a href="{{ route('invoices.index') }}">Manage Invoices</a></li>
+                    @endcan
+                    @can('invoices-create')
+                        <li><a href="{{ route('invoices.create') }}">Create Invoices</a></li>
+                    @endcan
+                </ul>
+            </li>
+        @endcanany
         @canany(['product-list', 'product-create', 'product-edit', 'product-delete'])
             <li><a><i class="fa fa-table"></i> Products <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">

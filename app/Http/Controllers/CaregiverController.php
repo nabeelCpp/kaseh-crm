@@ -33,6 +33,11 @@ class CaregiverController extends Controller
 
     public function create() : View {
         $title = 'Create New Caregiver';
+        $tranier = [
+            "" => "Select",
+            "yes" => "Yes",
+            "no" => "No"
+        ];
         $sex = [
             "" => "Select Gender",
             "male" => "Male",
@@ -63,7 +68,13 @@ class CaregiverController extends Controller
             "active" => "Active",
             "in-active" => "In-Active"
         ];
-        return view('caregivers.create',compact('title', 'sex','marital','status','nationality'));
+        $professionals = [
+            "" => "Select Profession",
+            "caregiver Nurse / psyhyo therapist" => "caregiver Nurse / psyhyo therapist",
+            "speech therapist" => "speech therapist" ,
+            "mid wife" => "mid wife"
+        ];
+        return view('caregivers.create',compact('title', 'sex','marital','professionals','tranier','status','nationality'));
     }
 
     public function edit(string $id) : View
@@ -75,6 +86,13 @@ class CaregiverController extends Controller
             "female" => "Female"
         ];
 
+        $professionals = [
+            "" => "Select Profession",
+            "caregiver Nurse / psyhyo therapist" => "caregiver Nurse / psyhyo therapist",
+            "speech therapist" => "speech therapist" ,
+            "mid wife" => "mid wife"
+        ];
+
         $marital = [
             "" => "Select Gender",
             "single" => "Single",
@@ -99,8 +117,13 @@ class CaregiverController extends Controller
             "active" => "Active",
             "in-active" => "In-Active"
         ];
+        $tranier = [
+            "" => "Select",
+            "yes" => "Yes",
+            "no" => "No"
+        ];
         $title = "Edit Customer [{$caregivers->first_name} {$caregivers->last_name}]";
-        return view('caregivers.edit',compact('caregivers', 'status','title', 'sex','marital','nationality'));
+        return view('caregivers.edit',compact('caregivers', 'professionals','status','title', 'sex','marital','tranier','nationality'));
     }
 
     public function update(Request $request, string $id): RedirectResponse
@@ -127,6 +150,7 @@ class CaregiverController extends Controller
 
     public function store(Request $request) : RedirectResponse
     {
+        
         $this->validate($request, [
             'first_name' => 'required',
             'last_name' => 'required'
