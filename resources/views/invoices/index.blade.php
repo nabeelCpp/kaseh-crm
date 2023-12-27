@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-right">
-            <a class="btn btn-success" href="{{ route('caregivers.create') }}"> Create New Caregiver</a>
+            <a class="btn btn-success" href="{{ route('invoices.create') }}"> Create New Invoice</a>
         </div>
     </div>
 </div>
