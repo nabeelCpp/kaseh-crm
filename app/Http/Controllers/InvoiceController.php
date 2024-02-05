@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Caregiver;
 use App\Models\Customer;
+use App\Models\Product;
 use App\Models\Invoice;
 use PhpParser\Node\Stmt\TryCatch;
 use Spatie\Permission\Models\Role;
@@ -27,21 +28,14 @@ class InvoiceController extends Controller
     {
         $title = 'Invoices';
         $dataTable = true;
-        $data = Invoice::all();
+        $data = Invoice::with('products')->get();
         return view('invoices.index',compact('data','title', 'dataTable'));
     }
     public function create() : View {
         $title = 'Create New Invoice';
         $caregivers = Caregiver::all();
         $customers  = Customer::all();
-        $products = [
-            "" => "Select Product",
-            "[CC-BLO-PAT-EXF] Blood Test EXF" => "[CC-BLO-PAT-EXF] Blood Test EXF",
-            "[CC-BLO-PAT-EXM] Blood Test EXM" => "[CC-BLO-PAT-EXM] Blood Test EXM",
-            "[CC-BLO-PAT-GHS] Blood Test GHS" => "[CC-BLO-PAT-GHS] Blood Test GHS",
-            "[CC-BLO-PAT-HFS] Blood Test HFS" => "[CC-BLO-PAT-HFS] Blood Test HFS",
-
-        ];
+        $products = Product::all();
 
         $homecaretypes = [
             "" => "Select caretype",
@@ -74,7 +68,7 @@ class InvoiceController extends Controller
     }
     public function show(string $id)
     {
-        $invoice = Invoice::with('caregiver', 'customer')->find($id);
+        $invoice = Invoice::with('products','caregiver','customer')->find($id);
         $title = "Show Invoice";
         return view('invoices.show',compact('invoice', 'title'));
     }
@@ -88,16 +82,12 @@ class InvoiceController extends Controller
 
     public function edit(string $id) : View
     {
-        $invoices = Invoice::find($id);
+        $invoices = Invoice::with('products','caregiver','customer')->find($id);
+        // $invoices = Invoice::find($id);
         $title = 'Create New Invoice';
-        $products = [
-            "" => "Select Product",
-            "[CC-BLO-PAT-EXF] Blood Test EXF" => "[CC-BLO-PAT-EXF] Blood Test EXF",
-            "[CC-BLO-PAT-EXM] Blood Test EXM" => "[CC-BLO-PAT-EXM] Blood Test EXM",
-            "[CC-BLO-PAT-GHS] Blood Test GHS" => "[CC-BLO-PAT-GHS] Blood Test GHS",
-            "[CC-BLO-PAT-HFS] Blood Test HFS" => "[CC-BLO-PAT-HFS] Blood Test HFS",
-
-        ];
+        $products = Product::all();
+        $caregivers = Caregiver::all();
+        $customers = Customer::all();
 
         $care_type = [
             "" => "Select caretype",
@@ -108,7 +98,7 @@ class InvoiceController extends Controller
 
         ];
         $title = "Edit Invoice";
-        return view('invoices.edit',compact('invoices','care_type','products','title',));
+        return view('invoices.edit',compact('invoices','care_type','products','title','caregivers','customers'));
     }
     
     public function update(Request $request, string $id): RedirectResponse

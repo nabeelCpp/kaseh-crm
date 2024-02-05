@@ -53,9 +53,15 @@
                                 {!! Form::select('care_type', $homecaretypes, null, ['class' => 'form-control']) !!}
                         </div>
                     </div>
-                    <div class="form-group">
-                            <strong>Products</strong>
-                            {!! Form::select('product', $products, null, ['class' => 'form-control']) !!}
+                    <div class="col-xs-12 col-sm-12 col-md-6">
+                        <div class="form-group">
+                        <strong>Products</strong><br>
+                            <select name="product" class="form-control custom-select-width">
+                            @foreach($products as $product)
+                                <option value="{{ $product->id}}">{{ $product->name }}</option>
+                            @endforeach
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>

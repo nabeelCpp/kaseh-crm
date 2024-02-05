@@ -17,4 +17,8 @@ class Product extends Model
     protected $fillable = [
         'name', 'detail'
     ];
+    public function invoices_product()
+    {
+        return $this->hasMany(Product::class);
+    }
 }

@@ -13,7 +13,7 @@
             <div class="field item form-group">
                 <label class="col-form-label col-md-2 col-sm-2 ">Product Name<span class="required">*</span></label>
                 <div class="col-md-6 col-sm-6">              
-                    {{$invoice->product}}
+                    {{$invoice->products->name}}
                 </div>
             </div>
         </div>
