@@ -28,7 +28,7 @@
                 <div class="row">
 
                     <div class="col-sm-9">
-                        {{ $invoices->product}}
+                        {{ $invoices->products->name}}
                     </div>
 
                 </div>

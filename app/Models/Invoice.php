@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Caregiver;
 use App\Models\Customer;
+use App\Models\Product;
 class Invoice extends Model
 {
     use HasFactory;
@@ -24,5 +25,9 @@ class Invoice extends Model
     public function customer()
     {
         return $this->belongsTo(Customer::class);
+    }
+    public function products()
+    {
+        return $this->belongsTo(Product::class, 'product');
     }
 }
