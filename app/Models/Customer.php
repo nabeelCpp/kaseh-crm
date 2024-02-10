@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Invoice;
+use App\Models\Quotation;
 class Customer extends Model
 {
     use HasFactory;
@@ -86,6 +87,10 @@ class Customer extends Model
     public function invoices_customers()
     {
         return $this->hasMany(Invoice::class);
+    }
+    public function quotations_customers()
+    {
+        return $this->hasMany(Quotation::class);
     }
 
 }

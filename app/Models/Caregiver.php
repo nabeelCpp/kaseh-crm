@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Invoice;
+use App\Models\Quotation;
 class Caregiver extends Model
 {
     use HasFactory;
@@ -50,6 +51,10 @@ class Caregiver extends Model
     ];
 
     public function invoices_caregiver()
+    {
+        return $this->hasMany(Invoice::class);
+    }
+    public function quotations_caregivers()
     {
         return $this->hasMany(Invoice::class);
     }

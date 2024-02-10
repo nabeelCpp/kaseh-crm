@@ -28,6 +28,12 @@
 		            <input type="text" name="name" class="form-control" placeholder="Name">
 		        </div>
 		    </div>
+			<div class="col-xs-12 col-sm-12 col-md-12">
+		        <div class="form-group">
+		            <strong>Price:</strong>
+					{{ Form::text('price', null, ['class' => 'form-control', 'placeholder' => 'Enter price']) }}
+		        </div>
+		    </div>
 		    <div class="col-xs-12 col-sm-12 col-md-12">
 		        <div class="form-group">
 		            <strong>Detail:</strong>

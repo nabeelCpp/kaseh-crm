@@ -96,10 +96,10 @@
                 <a><i class="fa fa-windows"></i> {{ __('Quotations') }} <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
                     @can('quotation-list')
-                        <li><a href="#">{{ __('Manage Quotations') }}</a></li>
+                        <li><a href="{{ route('quotations.index') }}">{{ __('Manage Quotations') }}</a></li>
                     @endcan
                     @can('quotation-create')
-                        <li><a href="#">{{ __('Create Quotation') }}</a></li>
+                        <li><a href="{{ route('quotations.create') }}">{{ __('Create Quotation') }}</a></li>
                     @endcan
                 </ul>
             </li>

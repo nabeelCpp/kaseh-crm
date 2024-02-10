@@ -54,6 +54,7 @@ class ProductController extends Controller
         request()->validate([
             'name' => 'required',
             'detail' => 'required',
+            'price'  => 'required',
         ]);
     
         Product::create($request->all());
@@ -96,6 +97,7 @@ class ProductController extends Controller
          request()->validate([
             'name' => 'required',
             'detail' => 'required',
+            'price' => 'required',
         ]);
     
         $product->update($request->all());
@@ -116,5 +118,10 @@ class ProductController extends Controller
     
         return redirect()->route('products.index')
                         ->with('success','Product deleted successfully');
+    }
+    public function getProductPrice($id)
+    {
+        $product = Product::find($id);
+        return response()->json(['price' => $product->price]);
     }
 }

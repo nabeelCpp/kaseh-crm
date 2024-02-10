@@ -29,6 +29,12 @@
 		            <input type="text" name="name" value="{{ $product->name }}" class="form-control" placeholder="Name">
 		        </div>
 		    </div>
+			<div class="col-xs-12 col-sm-12 col-md-12">
+		        <div class="form-group">
+		            <strong>Price:</strong>
+		            <input type="text" name="price" value="{{ $product->price }}" class="form-control" placeholder="Name">
+		        </div>
+		    </div>
 		    <div class="col-xs-12 col-sm-12 col-md-12">
 		        <div class="form-group">
 		            <strong>Detail:</strong>
