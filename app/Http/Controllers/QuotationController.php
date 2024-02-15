@@ -79,7 +79,7 @@ class QuotationController extends Controller
                 'price'    => $price,
             ];
             sub_quotation::create($childInput);
-        
+
             DB::commit();
             return redirect()->route('quotations.index')->with('success', 'Quotation created successfully');
         } catch (\Throwable $th) {
@@ -98,7 +98,7 @@ class QuotationController extends Controller
         if($quotation->sub_quotations[0]->product_id)
         {
             $quotation->product = Product::find($quotation->sub_quotations[0]->product_id);
-        
+
         }
         return view('quotations.show',compact('quotation', 'title'));
     }
@@ -113,7 +113,7 @@ class QuotationController extends Controller
         if($quotation->sub_quotations[0]->product_id)
         {
             $quotation->product = Product::find($quotation->sub_quotations[0]->product_id);
-        
+
         }
         return view('quotations.edit',compact('quotation', 'title'));
     }

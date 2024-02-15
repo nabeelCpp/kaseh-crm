@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-lg-12 margin-tb">
             <div class="pull-right">
-                <a class="btn btn-primary" href="{{ route('invoices.index') }}"> Back</a>
+                <a class="btn btn-primary" href="{{ route('quotations.index') }}"> Back</a>
             </div>
         </div>
     </div>
@@ -25,6 +25,7 @@
         <div class="col-xs-12 col-sm-12 col-md-6">
             <div class="form-group">
                 <select name="caregiver_id" class="form-control custom-select-width">
+                    <option value="" disabled selected>Select Caregiver</option>
                     @foreach ($caregivers as $caregiver)
                         <option value="{{ $caregiver->id }}">{{ $caregiver->first_name }}</option>
                     @endforeach
@@ -39,6 +40,7 @@
             <div class="col-xs-12 col-sm-12 col-md-6">
                 <div class="form-group">
                     <select name="customer_id" class="form-control custom-select-width">
+                        <option value="" disabled selected>Select Customer</option>
                         @foreach ($customers as $customer)
                             <option value="{{ $customer->id }}">{{ $customer->first_name }}</option>
                         @endforeach
@@ -53,6 +55,7 @@
                 <div class="col-xs-12 col-sm-12 col-md-6">
                     <div class="form-group">
                         <select name="product_id" id="productDropdown" class="form-control custom-select-width">
+                            <option value="" disabled selected>Select Product</option>
                             @foreach ($products as $product)
                                 <option value="{{ $product->id }}">{{ $product->name }}</option>
                             @endforeach
@@ -109,13 +112,13 @@
                 <div class="col-xs-12 col-sm-12 col-md-6">
                     <div class="form-group">
                     <strong>Quantity</strong>
-                    <input type="number" id="quantity" name="quantity" min="1" value="1">
+                    <input type="number" id="quantity" class="form-control" name="quantity" min="1" value="1">
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-6">
                     <div class="form-group">
                     <strong>Unit Price</strong>
-                    <input type="text" name="price" id="productPriceInput" readonly>
+                    <input type="text" name="price" id="productPriceInput" class="form-control" readonly>
                 </div>
         </div>
         </div>
