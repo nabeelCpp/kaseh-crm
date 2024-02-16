@@ -2,7 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Caregiver;
+use App\Models\Customer;
+use App\Models\Product;
+use App\Models\SalesOrder;
+use App\Models\SalesOrderProduct;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class SalesOrderController extends Controller
 {
@@ -25,7 +32,10 @@ class SalesOrderController extends Controller
      */
     public function index()
     {
-        //
+        $title = "Sales Orders";
+        $dataTable = true;
+        $data = SalesOrder::all();
+        return view('salesorders.index',compact('data','title', 'dataTable'));
     }
 
     /**
@@ -33,7 +43,11 @@ class SalesOrderController extends Controller
      */
     public function create()
     {
-        //
+        $title = 'Create Sales Order';
+        $caregivers = Caregiver::all();
+        $customers  = Customer::all();
+        $products = Product::all();
+        return view('salesorders.create',compact('title','products', 'customers','caregivers'));
     }
 
     /**
@@ -41,7 +55,34 @@ class SalesOrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'caregiver_id' => 'required',
+            'customer_id' => 'required',
+            'product_id' => 'required',
+            'quantity' => 'required|numeric|min:1',
+            'start_date' => 'required',
+            'end_date' => 'required'
+        ]);
+        try {
+            DB::beginTransaction();
+            $input = $request->all();
+            $input['user_id'] = Auth()->user()->id;
+            $order = SalesOrder::create($input);
+            SalesOrderProduct::create([
+                'sales_order_id' => $order->id,
+                'product_id' => $request->product_id,
+                'qty' => $request->quantity,
+                'unit_price' => $request->unit_price,
+                'total' => $request->total_invoiced
+            ]);
+            DB::commit();
+            return redirect()->route('orders.index')->with('success', 'Sales order created successfully');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->back()->withInput()->with('error', $th->getMessage());
+        }
+
+
     }
 
     /**

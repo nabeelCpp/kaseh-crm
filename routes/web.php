@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\{ProductController, CustomerController,CaregiverController,InvoiceController,QuotationController};
+use App\Http\Controllers\{ProductController, CustomerController,CaregiverController,InvoiceController,QuotationController, SalesOrderController};
 use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +36,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('caregivers', CaregiverController::class);
     Route::resource('invoices', InvoiceController::class);
     Route::resource('quotations', QuotationController::class);
+    Route::resource('orders', SalesOrderController::class);
     Route::get('/get-product-price/{id}', [ProductController::class, 'getProductPrice']);
 });
 
