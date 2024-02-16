@@ -109,11 +109,11 @@
                 <a><i class="fa fa-sitemap"></i> {{ __('Sales Order') }} <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
                     @can('salesorder-list')
-                        <li><a href="#">{{ __('Manage Sales Orders') }}</a></li>
+                        <li><a href="{{ route('orders.index') }}">{{ __('Manage Sales Orders') }}</a></li>
                     @endcan
 
                     @can('salesorder-create')
-                        <li><a href="#">{{ __('Create Sale Order') }}</a></li>
+                        <li><a href="{{ route('orders.create') }}">{{ __('Create Sale Order') }}</a></li>
                     @endcan
                 </ul>
             </li>
