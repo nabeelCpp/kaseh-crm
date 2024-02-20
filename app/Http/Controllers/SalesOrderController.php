@@ -10,7 +10,8 @@ use App\Models\SalesOrderProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-
+use Dompdf\Dompdf;
+use Dompdf\Options;
 class SalesOrderController extends Controller
 {
 
@@ -115,5 +116,32 @@ class SalesOrderController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function downloadSalesOrder($order_no) {
+        // Generate the PDF content (replace this with your invoice generation logic)
+        $id = (int)$order_no;
+        $data['order'] = SalesOrder::find($id);
+
+        $pdfContent = view('salesorders.invoice', $data)->render();
+
+        // Set up the PDF options
+        $options = new Options();
+        // $options->set('defaultFont', 'Arial');
+
+        // Create a new Dompdf instance
+        $dompdf = new Dompdf($options);
+
+        // Load HTML content into Dompdf
+        $dompdf->loadHtml($pdfContent);
+
+        // Render the PDF
+        $dompdf->render();
+
+        // Generate the PDF file name (you can customize this as needed)
+        $filename = 'sales_order_invoice_'.$data['order']['order_no'] .'_'. date('YmdHis') . '.pdf';
+
+        // Stream the PDF to the browser for download
+        return $dompdf->stream($filename);
     }
 }
