@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-lg-12 margin-tb">
             <div class="pull-right">
-                <a class="btn btn-primary" href="{{ route('quotations.index') }}"> Back</a>
+                <a class="btn btn-primary" href="{{ route('orders.index') }}"> Back</a>
             </div>
         </div>
     </div>

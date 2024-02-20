@@ -38,6 +38,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('quotations', QuotationController::class);
     Route::resource('orders', SalesOrderController::class);
     Route::get('/get-product-price/{id}', [ProductController::class, 'getProductPrice']);
+    Route::get('/orders/download/{order_no}', [SalesOrderController::class, 'downloadSalesOrder'])->name('download.order');
 });
 
 // path for user images
