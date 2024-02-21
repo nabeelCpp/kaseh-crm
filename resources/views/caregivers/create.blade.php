@@ -52,7 +52,7 @@
                 <div class="col-md-6 col-sm-6">
                 {!! Form::select('nationality', $nationality, null, ['class' => 'form-control']) !!}
                 </div>
-            </div>                  
+            </div>
         </div>
          <div class="col-xs-12 col-sm-12 col-md-4">
             <div class="form-group">
@@ -121,7 +121,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        
+
                         <div class="col-xs-12 col-sm-12 col-md-6">
                         <div class="form-group">
                                 <strong>Date Of Birth</strong>
@@ -225,7 +225,7 @@
                           </div>
                         </div>
                     </div>
-                 
+
                     <hr>
 
                     <h2 style="color:black">Bank Details</h2>
@@ -260,13 +260,7 @@
 
                     <h2 style="color:black">Availability</h2>
                     <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-6">
-                          <div class="form-group">
-                          <strong>How WE find this Caregiver?</strong>
-                            {!! Form::date('how_find_caregiver', null, array('placeholder' => 'Availability Date','class' => 'form-control')) !!}
-                 
-                          </div>
-                        </div>
+
                         <div class="col-xs-12 col-sm-12 col-md-6">
                           <div class="form-group">
                           <strong>Availability Date</strong>
@@ -297,7 +291,7 @@
                         </div><br>
                     </div><br>
                   </div>
- 
+
           </div>
 
         <div class="col-xs-12 col-sm-12 col-md-12 text-center">

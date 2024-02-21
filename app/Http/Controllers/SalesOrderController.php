@@ -57,7 +57,7 @@ class SalesOrderController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'caregiver_id' => 'required',
+            // 'caregiver_id' => 'required',
             'customer_id' => 'required',
             'product_id' => 'required',
             'quantity' => 'required|numeric|min:1',
@@ -91,7 +91,9 @@ class SalesOrderController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $data['order'] = SalesOrder::find($id);
+        $data['title'] = 'Sales Order #'.$data['order']->order_no;
+        return view('salesorders.show', $data);
     }
 
     /**
@@ -99,7 +101,12 @@ class SalesOrderController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $order = SalesOrder::find($id);
+        $title = 'Edit Sales Order #'.$order->order_no;
+        $caregivers = Caregiver::all();
+        $customers  = Customer::all();
+        $products = Product::all();
+        return view('salesorders.edit',compact('title','products', 'customers','caregivers', 'order'));
     }
 
     /**
@@ -107,7 +114,41 @@ class SalesOrderController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $this->validate($request, [
+            // 'caregiver_id' => 'required',
+            'customer_id' => 'required',
+            'product_id' => 'required',
+            'quantity' => 'required|numeric|min:1',
+            'start_date' => 'required',
+            'end_date' => 'required'
+        ]);
+        try {
+            DB::beginTransaction();
+            $input = $request->all();
+            $order = SalesOrder::find($id);
+            $order->caregiver_id = $input['caregiver_id'];
+            $order->customer_id = $input['customer_id'];
+            $order->start_date = $input['start_date'];
+            $order->end_date = $input['end_date'];
+            $order->total_invoiced = $input['total_invoiced'];
+            $order->remarks = $input['remarks'] ?? null;
+            $order->save();
+
+            $products = SalesOrderProduct::where(['sales_order_id' => $id])->get();
+            foreach ($products as $key => $product) {
+                SalesOrderProduct::where(['id' => $product->id])->update([
+                    'product_id' => $request->product_id,
+                    'qty' => $request->quantity,
+                    'unit_price' => $request->unit_price,
+                    'total' => $request->total_invoiced
+                ]);
+            }
+            DB::commit();
+            return redirect()->route('orders.index')->with('success', 'Sales order updated successfully');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->back()->withInput()->with('error', $th->getMessage());
+        }
     }
 
     /**
@@ -115,7 +156,26 @@ class SalesOrderController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $order = SalesOrder::find($id);
+            if (!$order) {
+                throw new \Exception("Sales Order not found");
+            }
+            if(count($order->products)){
+                // Delete associated products
+                $order->products->delete();
+            }
+            // Delete the sales order
+            $order->delete();
+            DB::commit();
+            return redirect()->route('orders.index')
+                            ->with('success', 'Sales Order deleted successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('orders.index')
+                            ->with('error', 'Failed to delete Sales Order: ' . $e->getMessage());
+        }
     }
 
     public function downloadSalesOrder($order_no) {

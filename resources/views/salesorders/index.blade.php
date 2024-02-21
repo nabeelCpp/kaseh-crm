@@ -37,7 +37,7 @@
                         {{ $value->customer->first_name }} {{ $value->customer->last_name ?? '' }}
                     </td>
                     <td>
-                        {{ $value->caregiver->first_name }} {{ $value->caregiver->last_name ?? '' }}
+                        {{ $value->caregiver->first_name ?? '-' }} {{ $value->caregiver->last_name ?? '' }}
                     </td>
                     <td>
                         {{ env('currency') }} {{ $value->total_invoiced }}
