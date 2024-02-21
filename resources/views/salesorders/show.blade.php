@@ -3,100 +3,84 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-right">
-            <a class="btn btn-primary" href="{{ route('quotations.index') }}"> Back</a>
+            <a class="btn btn-primary" href="{{ route('orders.index') }}"> Back</a>
         </div>
     </div>
 </div>
 <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-2">
+        <strong>Caregiver</strong>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-6">
+        <div class="form-group">
+            <input type="text" readonly value="{{ $order->caregiver->first_name ?? '-'  }} {{ $order->caregiver->last_name ?? null  }}" class="form-control">
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-2">
+        <strong>Customer</strong>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-6">
+        <div class="form-group">
+            <input type="text" readonly value="{{ $order->customer->first_name  }} {{ $order->customer->last_name ?? null  }}" class="form-control">
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-2">
+        <strong>Sales Person</strong>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-6">
+        <div class="form-group">
+            <input type="text" class="form-control" id="sales_person" name="sales_person"
+                value="{{ $order->user->name }}" readonly>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-6">
+        <div class="form-group">
+            <strong>Start Date</strong>
+            <input type="text" readonly value="{{ date('d-m-Y', strtotime($order->start_date)) }}" class="form-control">
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-6">
+        <div class="form-group">
+            <strong>End Date</strong>
+            <input type="text" readonly value="{{ date('d-m-Y', strtotime($order->end_date)) }}" class="form-control">
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="form-group">
+            <strong>Remarks</strong>
+            <textarea name="remarks" id="remarks" cols="30" rows="10" class="form-control" readonly>{{  $order->remarks ?? '-' }}</textarea>
+        </div>
+    </div>
+</div>
 
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="field item form-group">
-                <label class="col-form-label col-md-2 col-sm-2 "> Customer</label>
-                <div class="col-md-6 col-sm-6">              
-                    {{$quotation->customer->first_name}}
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="field item form-group">
-                <label class="col-form-label col-md-2 col-sm-2 ">CareGiver</label>
-                <div class="col-md-6 col-sm-6">
-                {{$quotation->caregiver->first_name}}
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="field item form-group">
-                <label class="col-form-label col-md-2 col-sm-2 "> Product</label>
-                <div class="col-md-6 col-sm-6">              
-                    {{$quotation->product->name}}
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="field item form-group">
-                <label class="col-form-label col-md-2 col-sm-2 ">Sales Person</label>
-                <div class="col-md-6 col-sm-6"> 
-                {{$quotation->sales_person}}      
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="field item form-group">
-                <label class="col-form-label col-md-2 col-sm-2 ">Date</label>
-                <div class="col-md-6 col-sm-6">              
-                {{$quotation->date}}    
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-                <label class="col-form-label col-md-2 col-sm-2 ">Reference Description</label>
-                <div class="col-md-6 col-sm-6"> 
-                {{$quotation->refrence_description}} 
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="field item form-group">
-                <label class="col-form-label col-md-2 col-sm-2 ">Service From</label>
-                <div class="col-md-6 col-sm-6">              
-                {{$quotation->sub_quotations[0]->service_from}}   
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="field item form-group">
-                <label class="col-form-label col-md-2 col-sm-2 ">Service To</label>
-                <div class="col-md-6 col-sm-6">              
-                {{$quotation->sub_quotations[0]->service_to}}   
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-                <label class="col-form-label col-md-2 col-sm-2 ">Description</label>
-                <div class="col-md-6 col-sm-6"> 
-                {{$quotation->sub_quotations[0]->description}} 
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-                <label class="col-form-label col-md-2 col-sm-2 ">Quantity</label>
-                <div class="col-md-6 col-sm-6"> 
-                {{$quotation->sub_quotations[0]->quantity}} 
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-                <label class="col-form-label col-md-2 col-sm-2 ">Price</label>
-                <div class="col-md-6 col-sm-6"> 
-                {{$quotation->sub_quotations[0]->price}} 
-                </div>
-            </div>
-        </div>
 
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Unit Price</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($order->products as $p)
+            <tr>
+                <th>{{ $p->product->name }}</th>
+                <td>{{ $p->qty }}</td>
+                <td>{{ $p->unit_price }}</td>
+                <td>{{ $p->total }}</td>
+            </tr>
+        @endforeach
+    </tbody>
+</table>
 
 @endsection

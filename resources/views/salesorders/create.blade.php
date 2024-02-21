@@ -17,7 +17,7 @@
     {{-- {!! Form::open(array('route' => 'users.store','method'=>'POST')) !!} --}}
     {!! Form::open(['route' => 'orders.store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
     {{ csrf_field() }}
-    <div class="row">
+    {{-- <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-2">
             <strong>Caregivers</strong>
         </div>
@@ -31,7 +31,7 @@
                 </select>
             </div>
         </div>
-    </div>
+    </div> --}}
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-2">
             <strong>Customers</strong>

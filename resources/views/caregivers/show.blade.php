@@ -17,7 +17,7 @@
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="field item form-group">
                 <label class="col-form-label col-md-2 col-sm-2 ">First Name<span class="required">*</span></label>
-                <div class="col-md-6 col-sm-6">              
+                <div class="col-md-6 col-sm-6">
                     {{$customer->first_name}}
                 </div>
             </div>
@@ -265,7 +265,7 @@
                           </div>
                         </div>
                     </div> -->
-                    
+
                    <!-- <h2 style="color:black">Closest Family Member Information</h2>
                    <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-6">
@@ -391,12 +391,7 @@
                             <textarea class="resizable_textarea form-control" name="internal_remarks" >{{$customer->internal_remarks}}</textarea><br>
                         </div><br>
                     </div><br>
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 ">Where We find Caregiver ?</label>
-                        <div class="col-md-9 col-sm-9 ">
-                            <textarea class="resizable_textarea form-control" name="how_find_caregiver" >{{$customer->how_find_caregiver}}</textarea><br>
-                        </div><br>
-                    </div><br>
+                    <br>
           </div>
     </div>
 @endsection
