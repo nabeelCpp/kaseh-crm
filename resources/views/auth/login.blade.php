@@ -51,7 +51,7 @@
                         <br />
 
                         <div>
-                        <h1><i class="fa fa-paw"></i> {{ config('app.name') }}</h1>
+                        <h1><img src="{{ asset('logo.png') }}" class="img img-responsive w-25" alt=""></h1>
                         <p>©{{ date('Y') }} All Rights Reserved. {{ config('app.name') }} is a CRM. Privacy and Terms</p>
                         </div>
                     </div>
