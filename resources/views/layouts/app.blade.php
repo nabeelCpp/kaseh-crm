@@ -20,7 +20,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="{{ route('home') }}" class="site_title"><i class="fa fa-paw"></i> <span>{{ config('app.name') }}</span></a>
+              <a href="{{ route('home') }}" class="site_title"><img src="{{ asset('logo.png') }}" class="img img-responsive w-25" alt=""> <span>{{ config('app.name') }}</span></a>
             </div>
 
             <div class="clearfix"></div>

@@ -1,7 +1,10 @@
 @extends('layouts.app')
 @section('content')
-<div class="row">
+<div class="row mb-3">
     <div class="col-lg-12 margin-tb">
+        <div class="pull-left">
+            <a href="{{ route('download.order', ['order_no' => $order->order_no ]) }}" class="btn btn-success">Download Quotation</a>
+        </div>
         <div class="pull-right">
             <a class="btn btn-primary" href="{{ route('orders.index') }}"> Back</a>
         </div>
