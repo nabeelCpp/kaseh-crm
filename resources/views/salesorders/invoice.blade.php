@@ -348,6 +348,22 @@
 </head>
 
 <body>
+    <div style="
+    display: flex;
+    padding: 10px 20px;
+    border-bottom: 1px solid black;">
+        <p style="flex: 35%;"><img src="{{ asset('logo.png') }}" style="max-width: 100px;" alt="" sizes="" srcset=""></p>
+        <div style="flex: 65%; line-height: 0.5cm">
+            <p style="font-weight: bold">73-3, Block G, Zenith Corporate Park</p>
+            <p style="font-size: 12px">Jalan SS7 /26, 47301 Kelana Jaya Selangor</p>
+            <p style="font-size: 12px">
+                M: +60 17- 5343627
+            </p>
+            <p style="font-size: 12px">
+               E: info@kasehcare.com
+            </p>
+        </div>
+    </div>
     <header>
         <h1>Invoice</h1>
         <address>
@@ -355,15 +371,14 @@
 
             <p>{{ $order->customer->first_name }} {{ $order->customer->last_name ?? null }}</p>
             <p>
-                {{ $order->customer->contact_info_address ?? null }} {{ $order->customer->contact_info_city ?? null }} {{ $order->customer->contact_info_state ?? null }} {{ $order->customer->contact_info_country ?? null }}
+                {{ $order->customer->contact_info_address ?? null }} {{ $order->customer->contact_info_city ?? null }}
+                {{ $order->customer->contact_info_state ?? null }} {{ $order->customer->contact_info_country ?? null }}
             </p>
             <p>{{ $order->customer->contact_info_phone ?? null }}</p>
         </address>
     </header>
     <article>
-        <address>
-            <p>Kaseh Care</p>
-        </address>
+
         <table class="meta">
             <tr>
                 <th><span>Invoice #</span></th>
@@ -371,7 +386,7 @@
             </tr>
             <tr>
                 <th><span>Date</span></th>
-                <td><span>{{  date('d-M-Y', strtotime($order->created_at)) }} </span></td>
+                <td><span>{{ date('d-M-Y', strtotime($order->created_at)) }} </span></td>
             </tr>
             <tr>
                 <th><span>Sales Person</span></th>
@@ -379,7 +394,9 @@
             </tr>
             <tr>
                 <th><span>Amount Due</span></th>
-                <td><span id="prefix">{{ env('CURRENCY') }}</span> <span>{{ number_format($order->total_invoiced, 2) }}</span></td>
+                <td><span id="prefix">{{ env('CURRENCY') }}</span>
+                    <span>{{ number_format($order->total_invoiced, 2) }}</span>
+                </td>
             </tr>
         </table>
         <table class="inventory">
@@ -397,12 +414,17 @@
                     <tr>
                         <td>{{ $product->product->name }}
                             <p>Paymaster: Dato Dr Mahendra Raj </p>
-                            <p>Patient Name: {{ $order->customer->first_name }} {{ $order->customer->last_name ?? null }}</p>
-                            <p>Check-In: {{ date('d-M-Y', strtotime($order->start_date)) }} @ 9am </p> <p>Check-Out: {{ date('d-M-Y', strtotime($order->end_date)) }} @ 9am</p></td>
+                            <p>Patient Name: {{ $order->customer->first_name }}
+                                {{ $order->customer->last_name ?? null }}</p>
+                            <p>Check-In: {{ date('d-M-Y', strtotime($order->start_date)) }} @ 9am </p>
+                            <p>Check-Out: {{ date('d-M-Y', strtotime($order->end_date)) }} @ 9am</p>
+                        </td>
                         <td>{{ $product->qty }}</td>
                         <td>{{ env('CURRENCY') }} {{ number_format($product->unit_price, 2) }}</td>
                         <td>N/A</td>
-                        <td><span data-prefix>{{ env('CURRENCY') }} </span> <span>{{ number_format($product->total, 2) }}</span></td>
+                        <td><span data-prefix>{{ env('CURRENCY') }} </span>
+                            <span>{{ number_format($product->total, 2) }}</span>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
@@ -410,14 +432,32 @@
         <table class="balance">
             <tr>
                 <th><span>Subtotal</span></th>
-                <td><span data-prefix>{{ env('CURRENCY') }} </span> <span></span><span>{{ number_format($product->total, 2) }}</span></td>
+                <td><span data-prefix>{{ env('CURRENCY') }} </span>
+                    <span></span><span>{{ number_format($product->total, 2) }}</span>
+                </td>
             </tr>
         </table>
     </article>
     <aside>
         <h1><span>Additional Notes</span></h1>
-        <div>
-            <small>Terms and conditions apply.</small>
+        <div style="font-size: 12px;">
+            <p style="font-weight: bold">Terms and conditions apply.</p>
+            <p style="margin-top: 10px; margin-bottom: 10px;">For more info, please refer to the full Terms & Conditions page on the CARE Concierge website at
+            <a href="https://kasehcare.com/">https://kasehcare.com/</a>. Please make all cheques payable to ' CARE GUARDIAN SDN BHD ' or Fund Transfer to:
+            </p>
+            <p style="margin-top: 20px; margin-bottom: 20px">
+                <span style="font-weight: bold">CARE GUARDIAN SDN BHD</span><br>
+                CIMB BANK Account No: <span style="font-weight: bold">8010948703</span>
+
+            </p>
+            <p>
+                For payment via Fund Transfer, kindly provide the bank in slip via email to sales@mycareconcierge.com or to your CARE
+                Manager. All payments are to be made prior to the commencement of any caregiving services. If you have any questions
+                regarding this invoice, please contact your CARE Manager.
+            </p>
+            <p style="margin-top: 10px">
+                We reserve the right to charge 1.5% interest per month on the invoiced amount for overdue invoices
+            </p>
         </div>
     </aside>
 </body>
