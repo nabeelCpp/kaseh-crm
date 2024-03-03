@@ -202,7 +202,9 @@ class SalesOrderController extends Controller
             }
             if(count($order->products)){
                 // Delete associated products
-                $order->products->delete();
+                foreach ($order->products as $key => $product) {
+                    $product->delete();
+                }
             }
             // Delete the sales order
             $order->delete();
