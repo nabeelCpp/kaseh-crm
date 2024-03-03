@@ -91,7 +91,24 @@ class SalesOrderController extends Controller
      */
     public function show(string $id)
     {
-        $data['order'] = SalesOrder::find($id);
+        $order = SalesOrder::findOrFail($id);
+        $data['order'] = $order;
+        $start_date = $order->start_date;
+        $end_date = $order->end_date;
+
+        $available_caregivers = Caregiver::whereDoesntHave('sales_orders', function ($query) use ($start_date, $end_date) {
+            $query->where(function ($query) use ($start_date, $end_date) {
+                $query->where('start_date', '<=', $start_date)
+                      ->where('end_date', '>=', $start_date);
+            })->orWhere(function ($query) use ($start_date, $end_date) {
+                $query->where('start_date', '<=', $end_date)
+                      ->where('end_date', '>=', $end_date);
+            })->orWhere(function ($query) use ($start_date, $end_date) {
+                $query->where('start_date', '>=', $start_date)
+                      ->where('end_date', '<=', $end_date);
+            });
+        })->get();
+        $data['caregivers'] = $available_caregivers;
         $data['title'] = 'Sales Order #'.$data['order']->order_no;
         return view('salesorders.show', $data);
     }
@@ -151,6 +168,27 @@ class SalesOrderController extends Controller
         }
     }
 
+
+    public function schedule(Request $request, string $id)
+    {
+        $this->validate($request, [
+            'caregiver_id' => 'required',
+        ]);
+        try {
+            DB::beginTransaction();
+            $input = $request->all();
+            $order = SalesOrder::find($id);
+            $order->caregiver_id = $input['caregiver_id'];
+            $order->remarks = $input['remarks'] ?? null;
+            $order->save();
+            DB::commit();
+            return redirect()->route('orders.index')->with('success', 'Caregiver Scheduling done successfully!');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->back()->withInput()->with('error', $th->getMessage());
+        }
+    }
+
     /**
      * Remove the specified resource from storage.
      */
@@ -182,7 +220,9 @@ class SalesOrderController extends Controller
         // Generate the PDF content (replace this with your invoice generation logic)
         $id = (int)$order_no;
         $data['order'] = SalesOrder::find($id);
-
+        $imageUrl = public_path('logo.png');
+        $base64Image = base64_encode(file_get_contents($imageUrl));
+        $data['base64Image'] = $base64Image;
         $pdfContent = view('salesorders.invoice', $data)->render();
 
         // Set up the PDF options

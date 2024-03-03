@@ -352,7 +352,9 @@
     display: flex;
     padding: 10px 20px;
     border-bottom: 1px solid black;">
-        <p style="flex: 35%;"><img src="{{ asset('logo.png') }}" style="max-width: 100px;" alt="" sizes="" srcset=""></p>
+        <p style="flex: 35%;">
+            <img src="data:image/png;base64,{{ $base64Image }}" style="max-width: 100px;" sizes="" srcset="" alt="Logo">
+        </p>
         <div style="flex: 65%; line-height: 0.5cm">
             <p style="font-weight: bold">73-3, Block G, Zenith Corporate Park</p>
             <p style="font-size: 12px">Jalan SS7 /26, 47301 Kelana Jaya Selangor</p>
@@ -379,7 +381,7 @@
     </header>
     <article>
 
-        <table class="meta">
+        <table class="meta" style="margin-top: -15%">
             <tr>
                 <th><span>Invoice #</span></th>
                 <td><span>{{ $order->order_no }}</span></td>

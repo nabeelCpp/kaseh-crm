@@ -37,6 +37,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('invoices', InvoiceController::class);
     Route::resource('quotations', QuotationController::class);
     Route::resource('orders', SalesOrderController::class);
+    Route::patch('/orders/scheduling/{id}', [SalesOrderController::class, 'schedule'])->name('orders.schedule');
     Route::get('/get-product-price/{id}', [ProductController::class, 'getProductPrice']);
     Route::get('/orders/download/{order_no}', [SalesOrderController::class, 'downloadSalesOrder'])->name('download.order');
 });

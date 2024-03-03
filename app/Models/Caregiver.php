@@ -58,4 +58,8 @@ class Caregiver extends Model
     {
         return $this->hasMany(Invoice::class);
     }
+
+    public function sales_orders() {
+        return $this->hasMany(SalesOrder::class);
+    }
 }
