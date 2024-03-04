@@ -21,14 +21,14 @@
         <tr>
             <th>No</th>
             <th>Name</th>
-            <th>Details</th>
+            <th>Treatment Type</th>
             <th width="280px">Action</th>
         </tr>
 	    @foreach ($products as $product)
 	    <tr>
 	        <td>{{ ++$i }}</td>
 	        <td>{{ $product->name }}</td>
-	        <td>{{ $product->detail }}</td>
+	        <td>{{ ucfirst($product->treatment_type) }} @if($product->treatment_type === 'weekly') <br><small>{{ $product->no_of_days_per_week }} days / week</small> @endif <br> <small>{{ $product->no_of_hrs_per_day }} hours / day</small>  </td>
 	        <td>
                 <form action="{{ route('products.destroy',$product->id) }}" method="POST">
                     <a class="btn btn-info" href="{{ route('products.show',$product->id) }}">Show</a>

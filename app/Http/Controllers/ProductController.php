@@ -1,19 +1,20 @@
 <?php
-    
+
 namespace App\Http\Controllers;
-    
+
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
-    
+
 class ProductController extends Controller
-{ 
+{
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+    protected $treatmentType = ['daily' => 'Daily', 'weekly' => 'Weekly'];
     function __construct()
     {
          $this->middleware('permission:product-list|product-create|product-edit|product-delete', ['only' => ['index','show']]);
@@ -32,7 +33,7 @@ class ProductController extends Controller
         return view('products.index',compact('products'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
-    
+
     /**
      * Show the form for creating a new resource.
      *
@@ -40,9 +41,10 @@ class ProductController extends Controller
      */
     public function create(): View
     {
-        return view('products.create');
+        $treatmentType = $this->treatmentType;
+        return view('products.create', compact('treatmentType'));
     }
-    
+
     /**
      * Store a newly created resource in storage.
      *
@@ -55,14 +57,15 @@ class ProductController extends Controller
             'name' => 'required',
             'detail' => 'required',
             'price'  => 'required',
+            'treatment_type' => 'required'
         ]);
-    
+
         Product::create($request->all());
-    
+
         return redirect()->route('products.index')
                         ->with('success','Product created successfully.');
     }
-    
+
     /**
      * Display the specified resource.
      *
@@ -73,7 +76,7 @@ class ProductController extends Controller
     {
         return view('products.show',compact('product'));
     }
-    
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -82,9 +85,10 @@ class ProductController extends Controller
      */
     public function edit(Product $product): View
     {
-        return view('products.edit',compact('product'));
+        $treatmentType = $this->treatmentType;
+        return view('products.edit',compact('product','treatmentType'));
     }
-    
+
     /**
      * Update the specified resource in storage.
      *
@@ -99,13 +103,13 @@ class ProductController extends Controller
             'detail' => 'required',
             'price' => 'required',
         ]);
-    
+
         $product->update($request->all());
-    
+
         return redirect()->route('products.index')
                         ->with('success','Product updated successfully');
     }
-    
+
     /**
      * Remove the specified resource from storage.
      *
@@ -115,7 +119,7 @@ class ProductController extends Controller
     public function destroy(Product $product): RedirectResponse
     {
         $product->delete();
-    
+
         return redirect()->route('products.index')
                         ->with('success','Product deleted successfully');
     }

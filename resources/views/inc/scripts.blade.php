@@ -18,3 +18,21 @@
 @endif
 <!-- Custom Theme Scripts -->
 <script src="{{ url('') }}/vendors/build/js/custom.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('[type="submit"]').click(function(e) {
+            let requiredFields = $("[required]");
+            requiredFields.each(function() {
+                if(!$(this).val()){
+                    e.preventDefault();
+                    $(this).parents('.form-group').addClass('bad');
+                    $("html, body").animate({ scrollTop: 0 }, "slow");
+                }else{
+                    if($(this).parents('.form-group').hasClass('bad')){
+                        $(this).parents('.form-group').removeClass('bad');
+                    }
+                }
+            })
+        })
+    })
+</script>

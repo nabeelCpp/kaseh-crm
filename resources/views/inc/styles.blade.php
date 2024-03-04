@@ -14,4 +14,12 @@
     <link href="{{ url('') }}/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
 @endif
 <link href="{{ url('') }}/vendors/build/css/custom.min.css" rel="stylesheet">
+<style>
+
+    .required::after{
+        color: red;
+        font-weight: bold;
+        content: ' *'
+    }
+</style>
 
