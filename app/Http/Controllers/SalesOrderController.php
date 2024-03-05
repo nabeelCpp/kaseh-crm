@@ -7,11 +7,14 @@ use App\Models\Customer;
 use App\Models\Product;
 use App\Models\SalesOrder;
 use App\Models\SalesOrderProduct;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Spatie\Permission\Models\Role;
+
 class SalesOrderController extends Controller
 {
 
@@ -44,11 +47,16 @@ class SalesOrderController extends Controller
      */
     public function create()
     {
+        $role = Role::where(['name' => 'Sales Agent'])->first();
+        $salesAgents = [];
+        foreach ($role->users as $key => $value) {
+            $salesAgents[$value->id] = $value->name;
+        }
         $title = 'Create Sales Order';
         $caregivers = Caregiver::all();
         $customers  = Customer::all();
         $products = Product::all();
-        return view('salesorders.create',compact('title','products', 'customers','caregivers'));
+        return view('salesorders.create',compact('title','products', 'customers','caregivers', 'salesAgents'));
     }
 
     /**
@@ -61,8 +69,8 @@ class SalesOrderController extends Controller
             'customer_id' => 'required',
             'product_id' => 'required',
             'quantity' => 'required|numeric|min:1',
-            'start_date' => 'required',
-            'end_date' => 'required'
+            // 'start_date' => 'required',
+            // 'end_date' => 'required'
         ]);
         try {
             DB::beginTransaction();
@@ -118,6 +126,7 @@ class SalesOrderController extends Controller
      */
     public function edit(string $id)
     {
+        dd(request()->has('role'));
         $order = SalesOrder::find($id);
         $title = 'Edit Sales Order #'.$order->order_no;
         $caregivers = Caregiver::all();
