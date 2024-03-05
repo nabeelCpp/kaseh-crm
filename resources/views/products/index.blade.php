@@ -21,6 +21,7 @@
         <tr>
             <th>No</th>
             <th>Name</th>
+            <th>Price</th>
             <th>Treatment Type</th>
             <th width="280px">Action</th>
         </tr>
@@ -28,6 +29,7 @@
 	    <tr>
 	        <td>{{ ++$i }}</td>
 	        <td>{{ $product->name }}</td>
+	        <td>{{ env('currency') }} {{ number_format($product->price, 2) }} / @if($product->treatment_type === 'daily') day @else week @endif</td>
 	        <td>{{ ucfirst($product->treatment_type) }} @if($product->treatment_type === 'weekly') <br><small>{{ $product->no_of_days_per_week }} days / week</small> @endif <br> <small>{{ $product->no_of_hrs_per_day }} hours / day</small>  </td>
 	        <td>
                 <form action="{{ route('products.destroy',$product->id) }}" method="POST">
