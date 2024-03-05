@@ -43,10 +43,10 @@
                         {{ env('currency') }} {{ $value->total_invoiced }}
                     </td>
                     <td>
-                        {{ date('d-m-Y', strtotime($value->start_date)) }}
+                        {{ $value->start_date ? date('d-m-Y', strtotime($value->start_date)) : '-'}}
                     </td>
                     <td>
-                        {{ date('d-m-Y', strtotime($value->end_date)) }}
+                        {{ $value->end_date ? date('d-m-Y', strtotime($value->end_date)) : '-' }}
                     </td>
                     <td>
                         {{ $value->stage }}
