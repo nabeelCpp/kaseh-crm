@@ -37,7 +37,7 @@
                 <div class="alert ">Last name is required!</div>
             </div>
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-12">
+        {{-- <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="field item form-group">
                 <label class="col-form-label col-md-2 col-sm-2 ">Nick Name<span class="required">*</span></label>
                 <div class="col-md-6 col-sm-6">
@@ -45,7 +45,7 @@
                 </div>
                 <div class="alert ">Nick name is required!</div>
             </div>
-        </div>
+        </div> --}}
         <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="field item form-group">
                 <label class="col-form-label col-md-2 col-sm-2 ">Nationality<span class="required">*</span></label>
@@ -98,14 +98,14 @@
             <div class="x_panel">
               <div class="x_content">
                   <div class="tab-pane fade show active" id="generalinfo" role="tabpanel" aria-labelledby="generalinfo-tab">
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-6">
                             <div class="form-group">
                                 <strong>Passport Expiry Date</strong>
                          {!! Form::date('passport_expiry_date', null, array('placeholder' => 'Passport Expiry Date','class' => 'form-control')) !!}
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-6">
                         <div class="form-group">
@@ -113,12 +113,12 @@
                             {!! Form::text('visa', null, array('placeholder' => 'Visa','class' => 'form-control')) !!}
                         </div>
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-6">
+                        {{-- <div class="col-xs-12 col-sm-12 col-md-6">
                         <div class="form-group">
                                 <strong>Visa Expiry Date</strong>
                          {!! Form::date('visa_expiry_date', null, array('placeholder' => 'Visa Expiry Date','class' => 'form-control')) !!}
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="row">
 
@@ -137,12 +137,12 @@
                                 {!! Form::select('gender', $sex, null, ['class' => 'form-control']) !!}
                             </div>
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-6">
+                        {{-- <div class="col-xs-12 col-sm-12 col-md-6">
                            <div class="form-group">
                                 <strong>Are You Certified Trainer?</strong>
                                 {!! Form::select('trainer', $tranier, null, ['class' => 'form-control']) !!}
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                   </div>
                   <div class="row">
@@ -166,12 +166,12 @@
                               {!! Form::select('profession', $professionals, null, ['class' => 'form-control']) !!}
                           </div>
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-6">
+                        {{-- <div class="col-xs-12 col-sm-12 col-md-6">
                           <div class="form-group">
                           <strong>Transportation</strong>
                           {!! Form::text('trasportation', null, array('placeholder' => 'Transportation','class' => 'form-control')) !!}
                           </div>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-6">
@@ -250,16 +250,16 @@
                               {!! Form::text('bank_cardholder', null, array('placeholder' => 'Bank Cardholder','class' => 'form-control')) !!}
                           </div>
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-6">
+                        {{-- <div class="col-xs-12 col-sm-12 col-md-6">
                         <div class="form-group">
                           <strong>Xero ID</strong>
                           {!! Form::text('xero_id', null, array('placeholder' => 'Xero ID','class' => 'form-control')) !!}
                           </div>
-                        </div>
+                        </div> --}}
                     </div>
 
-                    <h2 style="color:black">Availability</h2>
-                    <div class="row">
+                    {{-- <h2 style="color:black">Availability</h2> --}}
+                    {{-- <div class="row">
 
                         <div class="col-xs-12 col-sm-12 col-md-6">
                           <div class="form-group">
@@ -267,15 +267,15 @@
                           {!! Form::date('date_of_availability', null, array('placeholder' => 'Availability Date','class' => 'form-control')) !!}
                           </div>
                         </div>
-                    </div>
-                    <div class="row">
+                    </div> --}}
+                    {{-- <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-6">
                           <div class="form-group">
                               <strong>HashTag</strong>
                               {!! Form::text('hashtag', null, array('placeholder' => 'Hashtag','class' => 'form-control')) !!}
                           </div>
                         </div>
-                    </div>
+                    </div> --}}
 
 
                   <div class="form-group">

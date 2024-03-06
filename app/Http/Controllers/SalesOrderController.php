@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Caregiver;
 use App\Models\Customer;
 use App\Models\Product;
+use App\Models\Setting;
 use App\Models\SalesOrder;
 use App\Models\SalesOrderProduct;
 use App\Models\User;
@@ -229,6 +230,8 @@ class SalesOrderController extends Controller
 
     public function downloadSalesOrder($order_no) {
         // Generate the PDF content (replace this with your invoice generation logic)
+        $content = Setting::all();
+        $data['content'] = $content[0]->content;
         $id = (int)$order_no;
         $data['order'] = SalesOrder::find($id);
         $imageUrl = public_path('logo.png');
