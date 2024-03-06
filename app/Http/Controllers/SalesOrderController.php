@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Carbon;
 
 class SalesOrderController extends Controller
 {
@@ -103,7 +104,7 @@ class SalesOrderController extends Controller
         $order = SalesOrder::findOrFail($id);
         $data['order'] = $order;
         $start_date = $order->start_date;
-        $end_date = $order->end_date;
+        $end_date = $order->end_date ?? $order->start_date;
 
         $available_caregivers = Caregiver::whereDoesntHave('sales_orders', function ($query) use ($start_date, $end_date) {
             $query->where(function ($query) use ($start_date, $end_date) {
@@ -181,6 +182,7 @@ class SalesOrderController extends Controller
 
     public function schedule(Request $request, string $id)
     {
+        dd($request->all());
         $this->validate($request, [
             'caregiver_id' => 'required',
         ]);

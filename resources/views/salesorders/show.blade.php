@@ -17,6 +17,18 @@
     @include('inc.errors-alert')
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-2">
+            <strong>Product</strong>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6">
+            <div class="form-group">
+                <input type="text" readonly
+                    value="{{ $order->products[0]->product->name }} ({{ $order->products[0]->product->treatment_type }})"
+                    class="form-control">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-2">
             <strong>Caregiver</strong>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-6">
@@ -61,7 +73,7 @@
         <div class="col-xs-12 col-sm-12 col-md-6">
             <div class="form-group">
                 <strong>End Date</strong>
-                <input type="text" readonly value="{{ date('d-m-Y', strtotime($order->end_date)) }}"
+                <input type="text" readonly value="{{ $order->end_date ? date('d-m-Y', strtotime($order->end_date)) : '-' }}"
                     class="form-control">
             </div>
         </div>
@@ -112,15 +124,54 @@
                     {!! Form::model($order, ['method' => 'PATCH','route' => ['orders.schedule', $order->id], 'enctype' => 'multipart/form-data']) !!}
                         {{ csrf_field() }}
                         <div class="form-group">
-                            <select name="caregiver_id" class="form-control custom-select-width" required>
+                            <strong class="required">Select Caregiver</strong>
+                            <select name="caregiver_id" class="form-control custom-select-width w-50" required onchange="giveCaregiverEveryWhere(this.value)">
                                 <option value="" disabled selected>Select Caregiver</option>
                                 @foreach ($caregivers as $caregiver)
                                     <option value="{{ $caregiver->id }}" {{ old('caregiver_id') == $caregiver->id ? 'selected' : '' }}>{{ $caregiver->first_name }} {{ $caregiver->last_name ?? null }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary">Save</button>
+                        <div class="row">
+                            @if($order->products[0]->product->treatment_type === 'daily')
+                                @for ($i = 0; $i < $order->products[0]->qty; $i++)
+                                    <div class="col-xs-12 col-sm-12 col-md-6 scheduling">
+                                        <div class="form-group">
+                                            <strong  class="required">Start Date <small>Day {{ $i + 1 }}</small></strong>
+                                            {!! Form::date('start_date[]', Carbon\Carbon::parse($order->start_date)->addDays($i)->format('Y-m-d'), ['placeholder' => '', 'class' => 'form-control', 'required' => '', 'min' => date('Y-m-d')]) !!}
+                                        </div>
+                                        <div class="pull-right">
+                                            <button type="button" class="btn btn-link advance">Advance</button>
+                                        </div>
+                                        <div class="w-75 caregiver_div d-none">
+                                            <select name="caregiver[]" class="form-control custom-select-width w-50 caregivers__" required>
+                                                <option value="" disabled selected>Select Caregiver</option>
+                                                @foreach ($caregivers as $caregiver)
+                                                    <option value="{{ $caregiver->id }}" {{ old('caregiver_id') == $caregiver->id ? 'selected' : '' }}>{{ $caregiver->first_name }} {{ $caregiver->last_name ?? null }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                @endfor
+                            @endif
+                            @if($order->products[0]->product->treatment_type === 'weekly')
+                                <div class="col-xs-12 col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <strong class="required">Start Date <small>Week 1</small></strong>
+                                        {!! Form::date('start_date', null, ['placeholder' => '', 'class' => 'form-control', 'required' => '', 'min' => date('Y-m-d')]) !!}
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <strong>End Date <small>Week 1</small></strong>
+                                        {!! Form::date('end_date', null, ['placeholder' => '', 'class' => 'form-control', 'required' => '', 'min' => date('Y-m-d')]) !!}
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+
+                        <div class="form-group text-center py-5">
+                            <button type="submit" class="btn btn-secondary px-5">Save</button>
                         </div>
                     {!! Form::close() !!}
 
@@ -139,6 +190,20 @@
             $("html, body").animate({
                 scrollTop: targetTopPosition
             }, 1000); // Adjust the duration as needed
+        }
+
+        $(document).on('click', '.advance', function() {
+            if($(this).parents('.scheduling').find('.caregiver_div').hasClass('d-none')) {
+                $(this).parents('.scheduling').find('.caregiver_div').removeClass('d-none')
+                $(this).text('Hide')
+            }else {
+                $(this).parents('.scheduling').find('.caregiver_div').addClass('d-none')
+                $(this).text('Advance')
+            }
+        })
+
+        function giveCaregiverEveryWhere(val) {
+            $('.caregivers__').val(val)
         }
     </script>
 @endsection
