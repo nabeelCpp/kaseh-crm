@@ -56,10 +56,12 @@
                     </td>
                     <td>
                         <a class="btn btn-info btn-sm" href="{{ route('orders.show', $value->id) }}">Show</a>
+                        @if($value->user_id == Auth()->user()->id || Auth()->user()->roles[0]->name == 'Admin')
                         <a class="btn btn-primary btn-sm" href="{{ route('orders.edit', $value->id) }}">Edit</a>
                         {!! Form::open(['method' => 'DELETE', 'route' => ['orders.destroy', $value->id], 'style' => 'display:inline']) !!}
                         {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-sm']) !!}
                         {!! Form::close() !!}
+                        @endif
                     </td>
                 </tr>
             @endforeach
