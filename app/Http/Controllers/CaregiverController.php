@@ -80,6 +80,9 @@ class CaregiverController extends Controller
     public function edit(string $id) : View
     {
         $caregivers = Caregiver::find($id);
+        $logo = $caregivers->profile;
+        $logo_url = asset($logo);
+        $caregivers['caregiver_image'] = $logo_url;
         $sex = [
             "" => "Select Gender",
             "male" => "Male",
@@ -132,11 +135,16 @@ class CaregiverController extends Controller
             'first_name' => 'required',
             'last_name' => 'required'
         ]);
-
+        $image = $request->file('image')->getClientOriginalName();
+        $getfileExtension = $request->file('image')->getClientOriginalExtension();
+        $folderName = $request->first_name;
+        $caregiver_image = $image;
         $input = $request->all();
-
         $user = Caregiver::find($id);
+        $input['profile'] = 'storage/images/'. $folderName.'/'.$caregiver_image;
         $user->update($input);
+        $image_path_one = $request->file('image')->storeAs('public/images/'. $folderName, $caregiver_image);
+
         return redirect()->route('caregivers.index')
                         ->with('success','Caregiver updated successfully');
     }
@@ -144,22 +152,33 @@ class CaregiverController extends Controller
     public function show(string $id)
     {
         $customer = Caregiver::find($id);
+        $logo = $customer->profile;
+        $logo_url = asset($logo);
+        $customer['caregiver_image'] = $logo_url;
         $title = "Show Caregiver({$customer->first_name})";
         return view('caregivers.show',compact('customer', 'title'));
     }
 
     public function store(Request $request) : RedirectResponse
     {
-        
+
         $this->validate($request, [
             'first_name' => 'required',
             'last_name' => 'required'
         ]);
+        $image = $request->file('image')->getClientOriginalName();
+        $getfileExtension = $request->file('image')->getClientOriginalExtension();
+        $folderName = $request->first_name;
+        $caregiver_image = $request->first_name . '-' . 'caregiver.' . $getfileExtension;
 
         try {
             DB::beginTransaction();
             $input = $request->all();
-            Caregiver::create($input);
+            $input['profile'] = 'storage/images/'. $folderName.'/'.$caregiver_image;
+            $caregiver = Caregiver::create($input);
+            if($caregiver){
+            $image_path_one = $request->file('image')->storeAs('public/images/'. $folderName, $caregiver_image);
+            }
             DB::commit();
             return redirect()->route('caregivers.index')
                             ->with('success','Caregivers created successfully');

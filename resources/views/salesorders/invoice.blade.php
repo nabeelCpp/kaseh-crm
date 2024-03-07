@@ -443,7 +443,23 @@
     <aside>
         <h1><span>Additional Notes</span></h1>
         <div style="font-size: 12px;">
-            <h1>{{$content}}</h1>
+            <p style="font-weight: bold">Terms and conditions apply.</p>
+            <p style="margin-top: 10px; margin-bottom: 10px;">For more info, please refer to the full Terms & Conditions page on the CARE Concierge website at
+            <a href="https://kasehcare.com/">https://kasehcare.com/</a>. Please make all cheques payable to ' CARE GUARDIAN SDN BHD ' or Fund Transfer to:
+            </p>
+            <p style="margin-top: 20px; margin-bottom: 20px">
+                <span style="font-weight: bold">CARE GUARDIAN SDN BHD</span><br>
+                CIMB BANK Account No: <span style="font-weight: bold">8010948703</span>
+
+            </p>
+            <p>
+                For payment via Fund Transfer, kindly provide the bank in slip via email to sales@mycareconcierge.com or to your CARE
+                Manager. All payments are to be made prior to the commencement of any caregiving services. If you have any questions
+                regarding this invoice, please contact your CARE Manager.
+            </p>
+            <p style="margin-top: 10px">
+                We reserve the right to charge 1.5% interest per month on the invoiced amount for overdue invoices
+            </p>
         </div>
     </aside>
 </body>

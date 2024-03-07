@@ -17,39 +17,46 @@
   <body class="nav-md">
     <div class="container body">
       <div class="main_container">
+        @if(Auth::check())
         <div class="col-md-3 left_col">
+
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
+                @if(Auth::check())
               <a href="{{ route('home') }}" class="site_title"><img src="{{ asset('logo.png') }}" class="img img-responsive w-25" alt=""> <span>{{ config('app.name') }}</span></a>
-            </div>
+              @endif</div>
 
             <div class="clearfix"></div>
 
             <!-- menu profile quick info -->
             <div class="profile clearfix">
               <div class="profile_pic">
+                @if(Auth::check())
                 <img src="@if (!Auth::user()->image) {{ asset("storage/uploads/users/user.png") }} @else {{ asset("storage/".Auth::user()->image) }} @endif" alt="Profile image" class="img-circle profile_img">
-              </div>
-              <div class="profile_info">
-                <span>Welcome,</span>
-                <h2>{{ Auth::user()->name }}</h2>
-              </div>
-              <div class="clearfix"></div>
+                @endif</div>
+              {{-- <div class="profile_info">
+                <span>Welcome,</span> --}}
+                {{-- <h2>{{ Auth::user()->name }}</h2> --}}
+              {{-- </div> --}}
+              {{-- <div class="clearfix"></div> --}}
             </div>
             <!-- /menu profile quick info -->
 
             <br />
-
+               @if(Auth::check())
             <!-- sidebar menu -->
             @include('inc.sidebar')
             <!-- /sidebar menu -->
+            @endif
           </div>
-        </div>
 
+        </div>
+        @endif
+        @if(Auth::check())
         <!-- top navigation -->
         @include('inc.topbar')
         <!-- /top navigation -->
-
+        @endif
         <!-- page content -->
         <div class="right_col" role="main">
             <div class="">

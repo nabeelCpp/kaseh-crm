@@ -15,6 +15,16 @@
 
     {!! Form::model($caregivers, ['method' => 'PATCH','route' => ['caregivers.update', $caregivers->id], 'enctype' => 'multipart/form-data']) !!}
     <div class="row">
+        <img src="{{ $caregivers->caregiver_image }}" alt="Image">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="field item form-group">
+                <label class="col-form-label col-md-2 col-sm-2 ">Caregiver Image<span class="required">*</span></label>
+                <div class="col-md-6 col-sm-6">
+                    <input type="file" name="image">
+                </div>
+                <div class="alert ">First name is required!</div>
+            </div>
+        </div>
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="field item form-group">
                 <label class="col-form-label col-md-2 col-sm-2 ">First Name<span class="required">*</span></label>
@@ -48,7 +58,7 @@
                 <div class="col-md-6 col-sm-6">
                 {!! Form::select('nationality', $nationality, null, ['class' => 'form-control']) !!}
                 </div>
-            </div>                  
+            </div>
         </div>
          <div class="col-xs-12 col-sm-12 col-md-4">
             <div class="form-group">
@@ -117,7 +127,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        
+
                         <div class="col-xs-12 col-sm-12 col-md-6">
                         <div class="form-group">
                                 <strong>Date Of Birth</strong>
@@ -221,7 +231,7 @@
                           </div>
                         </div>
                     </div>
-                 
+
                     <hr>
 
                     <h2 style="color:black">Bank Details</h2>
@@ -260,8 +270,8 @@
                           <div class="form-group">
                           <strong>How WE find this Caregiver?</strong>
                           {!! Form::textarea('internal_remarks', null, ['class' => 'resizable_textarea form-control']) !!}<br>
-                            
-                 
+
+
                           </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-6">
@@ -294,7 +304,7 @@
                         </div><br>
                     </div><br>
                   </div>
- 
+
           </div>
         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
             <button type="submit" class="btn btn-success" id="submit">Update</button>

@@ -7,6 +7,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\{ProductController, CustomerController,CaregiverController,InvoiceController,QuotationController, SalesOrderController};
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\PublicCaregiver;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,6 +22,9 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', function () {
     return redirect()->to('/login');
 });
+
+Route::get('/caregiver/{id}', [PublicCaregiver::class, 'CareGiver'])->name('caregiver');
+
 
 Auth::routes();
 
