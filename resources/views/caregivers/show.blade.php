@@ -14,6 +14,7 @@
                 {!! Form::file('image', null, array('class' => 'form-control')) !!}
             </div>
         </div> -->
+        <img src="{{ $customer->caregiver_image }}" alt="Image">
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="field item form-group">
                 <label class="col-form-label col-md-2 col-sm-2 ">First Name<span class="required">*</span></label>
