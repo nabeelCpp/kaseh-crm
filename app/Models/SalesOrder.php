@@ -49,4 +49,8 @@ class SalesOrder extends Model
     public function products() {
         return $this->hasMany(SalesOrderProduct::class);
     }
+
+    public function schedulings() {
+        return $this->hasMany(Scheduling::class);
+    }
 }
