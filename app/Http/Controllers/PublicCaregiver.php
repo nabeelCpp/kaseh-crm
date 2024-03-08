@@ -8,11 +8,11 @@ class PublicCaregiver extends Controller
 {
     public function CareGiver($id)
     {
-        $customer = Caregiver::find($id);
-        $title = "Show Caregiver({$customer->first_name})";
-        $logo = $customer->profile;
+        $caregiver = Caregiver::find($id);
+        $title = "Show Caregiver({$caregiver->first_name})";
+        $logo = $caregiver->profile;
         $logo_url = asset($logo);
-        $customer['caregiver_image'] = $logo_url;
-        return view('caregivers.PublicAccess',compact('customer', 'title'));
+        $caregiver['caregiver_image'] = $logo_url;
+        return view('caregivers.PublicAccess',compact('caregiver', 'title'));
     }
 }

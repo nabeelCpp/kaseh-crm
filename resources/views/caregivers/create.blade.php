@@ -23,9 +23,10 @@
             <div class="field item form-group">
                 <label class="col-form-label col-md-2 col-sm-2 ">Caregiver Image<span class="required">*</span></label>
                 <div class="col-md-6 col-sm-6">
-                    <input type="file" name="image">
+                    {{-- <input type="file" name="image"> --}}
+                    {!! Form::file('profile', null, array('placeholder' => 'profile','class' => 'form-control', 'required' => true)) !!}
                 </div>
-                <div class="alert ">First name is required!</div>
+                <div class="alert ">image is required!</div>
             </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12">
@@ -311,21 +312,38 @@
 @endsection
 @section('js')
     <script>
-        $(document).ready(function() {
-            $('#submit').click(function(e) {
-                let requiredFields = $("[required]");
-                requiredFields.each(function() {
-                    if(!$(this).val()){
-                        e.preventDefault();
-                        $(this).parents('.form-group').addClass('bad');
-                        $("html, body").animate({ scrollTop: 0 }, "slow");
-                    }else{
-                        if($(this).parents('.form-group').hasClass('bad')){
-                            $(this).parents('.form-group').removeClass('bad');
-                        }
-                    }
-                })
-            })
-        })
+$(document).ready(function() {
+    $('#submit').click(function(e) {
+        let formValid = true;
+        $('.form-group').each(function() {
+            let input = $(this).find('input[type="file"]');
+            let firstName = $(this).find('input[name="first_name"]');
+            let lastName = $(this).find('input[name="last_name"]');
+
+            if (input.length > 0 && input.prop('files').length === 0) {
+                $(this).addClass('bad');
+                $(this).find('.alert').show();
+                formValid = false;
+            } else if (firstName.length > 0 && !firstName.val()) {
+                $(this).addClass('bad');
+                $(this).find('.alert').show();
+                formValid = false;
+            } else if (lastName.length > 0 && !lastName.val()) {
+                $(this).addClass('bad');
+                $(this).find('.alert').show();
+                formValid = false;
+            } else {
+                $(this).removeClass('bad');
+                $(this).find('.alert').hide();
+            }
+        });
+
+        if (!formValid) {
+            e.preventDefault();
+            $("html, body").animate({ scrollTop: 0 }, "slow");
+        }
+    });
+});
+
     </script>
 @endsection

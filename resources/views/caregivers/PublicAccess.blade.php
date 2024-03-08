@@ -1,252 +1,171 @@
-
 @extends('layouts.app')
 @section('content')
-<div class="row">
-    <div class="col-md-12 col-sm-12 ">
-      <div class="x_panel">
-        <div class="x_title">
-          <h2>User Report</h2>
-          <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" href="#">Settings 1</a>
-                  <a class="dropdown-item" href="#">Settings 2</a>
-                </div>
-            </li>
-            <li><a class="close-link"><i class="fa fa-close"></i></a>
-            </li>
-          </ul>
-          <div class="clearfix"></div>
-        </div>
-        <div class="x_content">
-          <div class="col-md-3 col-sm-3  profile_left">
-            <div class="profile_img">
-              <div id="crop-avatar">
-                <!-- Current avatar -->
-                {{-- <img class="img-responsive avatar-view" src="images/picture.jpg" alt="Avatar" title="Change the avatar"> --}}
-              </div>
+    <div class="row mb-3">
+        <div class="col-lg-12 margin-tb">
+            <div class="pull-left">
+                <a class="btn btn-primary" href="{{ route('orders.index') }}"> Back</a>
             </div>
-            <h3>{{$customer->first_name}} {{$customer->last_name}}</h3>
-            <img src="{{ $customer->caregiver_image }}" alt="Image">
-            <ul class="list-unstyled user_data">
-              <li><i class="fa fa-map-marker user-profile-icon"></i> {{$customer->address_one}}
-              </li>
-
-              <li>
-                <i class="fa fa-briefcase user-profile-icon"></i> {{$customer->profession}}
-              </li>
-
-              <li class="m-top-xs">
-                <i class="fa fa-external-link user-profile-icon"></i>
-                <a href="http://www.kimlabs.com/profile/" target="_blank">www.kimlabs.com</a>
-              </li>
-              <li>
-                <i class="fa fa-flag user-profile-icon"></i> {{$customer->nationality}}
-              </li>
-              <li>
-                <i class="fa fa-mobile user-profile-icon"></i> {{$customer->mobile}}
-              </li>
-              <li>
-                <i class="fa fa-child user-profile-icon"></i> {{$customer->age}}
-              </li>
-              <li>
-                <i class="fa fa-child user-profile-icon"></i> {{$customer->gender}}
-              </li>
-              <li>
-                <i class="fa fa-flag user-profile-icon"></i> {{$customer->country}}
-              </li>
-              <li>
-                <i class="fa fa-flag user-profile-icon"></i> {{$customer->country}}
-              </li>
-            </ul>
-            <h4>Skills</h4>
-            <ul class="list-unstyled user_data">
-              <li>
-                <p>{{$customer->skills}}</p>
-                <div class="progress progress_sm">
-                  <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="50"></div>
-                </div>
-              </li>
-            </ul>
-            <!-- end of skills -->
-
-          </div>
-          <div class="col-md-9 col-sm-9 ">
-
-            <div class="profile_title">
-              <div class="col-md-6">
-                <h2>Joining Date</h2>
-              </div>
-              <div class="col-md-6">
-                <div id="reportrange" class="pull-right" style="margin-top: 5px; background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #E6E9ED">
-                  <i class="fa fa-calendar"></i>
-                  <span>{{$customer->created_at}}</span> <b class="caret"></b>
-                </div>
-              </div>
-            </div>
-            <!-- start of user-activity-graph -->
-            <div id="graph_bar" style="width:100%; height:280px;"></div>
-            <!-- end of user-activity-graph -->
-
-            {{-- <div class="" role="tabpanel" data-example-id="togglable-tabs">
-              <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Recent Activity</a>
-                </li>
-                <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Projects Worked on</a>
-                </li>
-                <li role="presentation" class=""><a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Profile</a>
-                </li>
-              </ul>
-              <div id="myTabContent" class="tab-content">
-                <div role="tabpanel" class="tab-pane active " id="tab_content1" aria-labelledby="home-tab">
-
-                  <!-- start recent activity -->
-                  <ul class="messages">
-                    <li>
-                      <img src="images/img.jpg" class="avatar" alt="Avatar">
-                      <div class="message_date">
-                        <h3 class="date text-info">24</h3>
-                        <p class="month">May</p>
-                      </div>
-                      <div class="message_wrapper">
-                        <h4 class="heading">Desmond Davison</h4>
-                        <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
-                        <br />
-                        <p class="url">
-                          <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-                          <a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
-                        </p>
-                      </div>
-                    </li>
-                    <li>
-                      <img src="images/img.jpg" class="avatar" alt="Avatar">
-                      <div class="message_date">
-                        <h3 class="date text-error">21</h3>
-                        <p class="month">May</p>
-                      </div>
-                      <div class="message_wrapper">
-                        <h4 class="heading">Brian Michaels</h4>
-                        <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
-                        <br />
-                        <p class="url">
-                          <span class="fs1" aria-hidden="true" data-icon=""></span>
-                          <a href="#" data-original-title="">Download</a>
-                        </p>
-                      </div>
-                    </li>
-                    <li>
-                      <img src="images/img.jpg" class="avatar" alt="Avatar">
-                      <div class="message_date">
-                        <h3 class="date text-info">24</h3>
-                        <p class="month">May</p>
-                      </div>
-                      <div class="message_wrapper">
-                        <h4 class="heading">Desmond Davison</h4>
-                        <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
-                        <br />
-                        <p class="url">
-                          <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-                          <a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
-                        </p>
-                      </div>
-                    </li>
-                    <li>
-                      <img src="images/img.jpg" class="avatar" alt="Avatar">
-                      <div class="message_date">
-                        <h3 class="date text-error">21</h3>
-                        <p class="month">May</p>
-                      </div>
-                      <div class="message_wrapper">
-                        <h4 class="heading">Brian Michaels</h4>
-                        <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
-                        <br />
-                        <p class="url">
-                          <span class="fs1" aria-hidden="true" data-icon=""></span>
-                          <a href="#" data-original-title="">Download</a>
-                        </p>
-                      </div>
-                    </li>
-
-                  </ul>
-                  <!-- end recent activity -->
-
-                </div>
-                <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
-
-                  <!-- start user projects -->
-                  <table class="data table table-striped no-margin">
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th>Project Name</th>
-                        <th>Client Company</th>
-                        <th class="hidden-phone">Hours Spent</th>
-                        <th>Contribution</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>1</td>
-                        <td>New Company Takeover Review</td>
-                        <td>Deveint Inc</td>
-                        <td class="hidden-phone">18</td>
-                        <td class="vertical-align-mid">
-                          <div class="progress">
-                            <div class="progress-bar progress-bar-success" data-transitiongoal="35"></div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>2</td>
-                        <td>New Partner Contracts Consultanci</td>
-                        <td>Deveint Inc</td>
-                        <td class="hidden-phone">13</td>
-                        <td class="vertical-align-mid">
-                          <div class="progress">
-                            <div class="progress-bar progress-bar-danger" data-transitiongoal="15"></div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>3</td>
-                        <td>Partners and Inverstors report</td>
-                        <td>Deveint Inc</td>
-                        <td class="hidden-phone">30</td>
-                        <td class="vertical-align-mid">
-                          <div class="progress">
-                            <div class="progress-bar progress-bar-success" data-transitiongoal="45"></div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>4</td>
-                        <td>New Company Takeover Review</td>
-                        <td>Deveint Inc</td>
-                        <td class="hidden-phone">28</td>
-                        <td class="vertical-align-mid">
-                          <div class="progress">
-                            <div class="progress-bar progress-bar-success" data-transitiongoal="75"></div>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <!-- end user projects -->
-
-                </div>
-                <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
-                  <p>xxFood truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui
-                    photo booth letterpress, commodo enim craft beer mlkshk </p>
-                </div>
-              </div>
+            {{-- <div class="pull-right">
+                <a href="{{ route('download.order', ['order_no' => $order->order_no]) }}" class="btn btn-success"><i
+                        class="fa fa-download"></i> Download Quotation</a>
+                @if (!$order->caregiver_id)
+                    <button class="btn btn-secondary" onclick="confirmAppointment()"><i class="fa fa-check"></i> Confirm Appointment</button>
+                @endif
             </div> --}}
-          </div>
         </div>
-      </div>
     </div>
-  </div>
+    @include('inc.errors-alert')
+    <style>
+       .caregiver-image {
+        max-width: 200px; /* Set the maximum width of the image */
+        max-height: 150px; /* Set the maximum height of the image */
+        border-radius: 50%; /* Make the image round */
+        border: 2px solid #ccc; /* Add a border around the image */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a shadow to the image */
+    }
+    </style>
+    <div class="row">
+        <img src="{{ $caregiver->caregiver_image }}" alt="Image" class="caregiver-image">
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-2">
+            <strong>Caregiver</strong>
+        </div>
 
-  @endsection
+        <div class="col-xs-12 col-sm-12 col-md-6">
+            <div class="form-group">
+                <input type="text" readonly
+                    value="{{ $caregiver->first_name ?? '-' }} {{ $caregiver->last_name ?? null }}"
+                    class="form-control">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-2">
+            <strong>Nationality</strong>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6">
+            <div class="form-group">
+                <input type="text" readonly
+                    value="{{ $caregiver->nationality }} "
+                    class="form-control">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-2">
+            <strong>Mobile</strong>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6">
+            <div class="form-group">
+                <input type="text" class="form-control" id="sales_person" name="sales_person"
+                    value="{{ $caregiver->mobile }}" readonly>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-6">
+            <div class="form-group">
+                <strong>Joining Date</strong>
+                <input type="text" readonly value="{{ date('d-m-Y', strtotime($caregiver->created_at)) }}"
+                    class="form-control">
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6">
+            <div class="form-group">
+                <strong>Country</strong>
+                <input type="text" readonly value="{{$caregiver->country }}"
+                    class="form-control">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-6">
+            <div class="form-group">
+                <strong>Age</strong>
+                <input type="text" readonly value="{{ $caregiver->age }}"
+                    class="form-control">
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6">
+            <div class="form-group">
+                <strong>Gender</strong>
+                <input type="text" readonly value="{{$caregiver->gender }}"
+                    class="form-control">
+            </div>
+        </div>
+    </div>
+    {{-- <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="form-group">
+                <strong>Remarks</strong>
+                <textarea name="remarks" id="remarks" cols="30" rows="10" class="form-control" readonly>{{ $order->remarks ?? '-' }}</textarea>
+            </div>
+        </div>
+    </div> --}}
+
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Profession</th>
+                <th>Status</th>
+                <th>Marital Status</th>
+                <th>Address</th>
+            </tr>
+        </thead>
+        <tbody>
+                <tr>
+                    <th>{{$caregiver->profession  }}</th>
+                    <td>{{$caregiver->status  }}</td>
+                    <td>{{ $caregiver->marital_status  }}</td>
+                    <td>{{ $caregiver->address_one  }}</td>
+                </tr>
+        </tbody>
+    </table>
+
+    {{-- scheduling --}}
+
+    {{-- <div class="d-none" id="scheduling_div">
+        <div class="col-md-12 col-sm-12  ">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Scheduling <small></small></h2>
+
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <p>Assign caregiver and schedule its duties</p>
+                    {!! Form::model($order, ['method' => 'PATCH','route' => ['orders.schedule', $order->id], 'enctype' => 'multipart/form-data']) !!}
+                        {{ csrf_field() }}
+                        <div class="form-group">
+                            <select name="caregiver_id" class="form-control custom-select-width" required>
+                                <option value="" disabled selected>Select Caregiver</option>
+                                @foreach ($caregivers as $caregiver)
+                                    <option value="{{ $caregiver->id }}" {{ old('caregiver_id') == $caregiver->id ? 'selected' : '' }}>{{ $caregiver->first_name }} {{ $caregiver->last_name ?? null }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    {!! Form::close() !!}
+
+                </div>
+            </div>
+        </div>
+    </div> --}}
+@endsection
+@section('js')
+    <script>
+        function confirmAppointment() {
+            $('#scheduling_div').removeClass('d-none')
+            // Get the top position of the target div
+            var targetTopPosition = $("#scheduling_div").offset().top;
+            // Scroll to the target div
+            $("html, body").animate({
+                scrollTop: targetTopPosition
+            }, 1000); // Adjust the duration as needed
+        }
+    </script>
+@endsection

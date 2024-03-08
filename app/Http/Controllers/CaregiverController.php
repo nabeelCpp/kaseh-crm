@@ -164,10 +164,11 @@ class CaregiverController extends Controller
 
         $this->validate($request, [
             'first_name' => 'required',
-            'last_name' => 'required'
+            'last_name' => 'required',
+            'profile' => 'required|image|mimes:jpeg,png,jpg,gif|',
         ]);
-        $image = $request->file('image')->getClientOriginalName();
-        $getfileExtension = $request->file('image')->getClientOriginalExtension();
+        $image = $request->file('profile')->getClientOriginalName();
+        $getfileExtension = $request->file('profile')->getClientOriginalExtension();
         $folderName = $request->first_name;
         $caregiver_image = $request->first_name . '-' . 'caregiver.' . $getfileExtension;
 
@@ -177,7 +178,7 @@ class CaregiverController extends Controller
             $input['profile'] = 'storage/images/'. $folderName.'/'.$caregiver_image;
             $caregiver = Caregiver::create($input);
             if($caregiver){
-            $image_path_one = $request->file('image')->storeAs('public/images/'. $folderName, $caregiver_image);
+            $image_path_one = $request->file('profile')->storeAs('public/images/'. $folderName, $caregiver_image);
             }
             DB::commit();
             return redirect()->route('caregivers.index')
