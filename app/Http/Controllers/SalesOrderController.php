@@ -8,6 +8,8 @@ use App\Models\Product;
 use App\Models\Setting;
 use App\Models\SalesOrder;
 use App\Models\SalesOrderProduct;
+use App\Models\SalesOrderScheduledDay;
+use App\Models\ScheduledDay;
 use App\Models\Scheduling;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -137,7 +139,6 @@ class SalesOrderController extends Controller
      */
     public function edit(string $id)
     {
-        dd(request()->has('role'));
         $order = SalesOrder::find($id);
         $title = 'Edit Sales Order #'.$order->order_no;
         $caregivers = Caregiver::all();
@@ -191,24 +192,39 @@ class SalesOrderController extends Controller
 
     public function schedule(Request $request, string $id)
     {
+        $order = SalesOrder::find($id);
         $this->validate($request, [
             'caregiver_id' => 'required',
             'start_date' => ['required', 'array', 'min:1'],
             'start_date.*' => ['required'],
             'caregiver' => ['required', 'array', 'min:1'],
             'caregiver.*' => ['required'],
+            'days_scheduled' => ['required', 'array', 'min:'.$order->products[0]->product->no_of_days_per_week, 'max:'.$order->products[0]->product->no_of_days_per_week],
+            'days' => ['required', 'array'],
+            'days.*' => ['required', 'array', 'min:'.$order->products[0]->product->no_of_days_per_week, 'max:'.$order->products[0]->product->no_of_days_per_week],
         ]);
         try {
             DB::beginTransaction();
             $input = $request->all();
-            $order = SalesOrder::find($id);
             $order->caregiver_id = $input['caregiver_id'];
             $order->remarks = $input['remarks'] ?? null;
             $order->save();
 
+            //remove old schedules days
+            SalesOrderScheduledDay::where(['sales_order_id' => $id])->delete();
+
+            // add scheduled_days to table
+            foreach ($request->days_scheduled as $key => $value) {
+                SalesOrderScheduledDay::create(['sales_order_id' => $id, 'day' => $value]);
+            }
+
+
             //remove old schedulings if any
             Scheduling::where(['sales_order_id' => $id])->delete();
 
+            // remove old scheduling days of schedules
+
+            ScheduledDay::where(['sales_order_id' => $id])->delete();
 
             // Scheduling here
             for ($i=0; $i < count($request->start_date); $i++) {
@@ -219,7 +235,16 @@ class SalesOrderController extends Controller
                     'sales_order_id' => $id,
                     'scheduled_by' => Auth()->user()->id,
                 ];
-                Scheduling::create($schedule_arr);
+                $schedule = Scheduling::create($schedule_arr);
+                //save all the schedulings days for each schedule.
+                foreach ($request->days[$i] as $key => $value) {
+                    ScheduledDay::create([
+                        'sales_order_id' => $id,
+                        'scheduling_id' => $schedule->id,
+                        'day' => $value
+                    ]);
+                }
+
             }
 
             DB::commit();

@@ -125,7 +125,33 @@
                         <div class="form-group">
                             <strong class="required">Select Caregiver</strong>
                             {{ Form::select('caregiver_id', $caregivers, null, ['class' => 'form-control custom-select-width w-50', 'placeholder' => 'Select Caregiver', 'required' => true, "onchange" => "giveCaregiverEveryWhere(this.value)"]) }}
+                            @if ($order->products[0]->product->treatment_type === 'weekly')
+                                <br>
 
+                                <strong class="mt-2 required">Select Days ({{ $order->products[0]->product->no_of_days_per_week }} days / week) <small>{{ $order->products[0]->product->no_of_hrs_per_day }} hours/day</small>:</strong>
+                                <p class="p-5 days_container" id="main_divion_of_days" data-id="{{ $order->products[0]->product->no_of_days_per_week }}">
+                                    @php
+                                        $start_date = Carbon\Carbon::parse($order->start_date)
+                                    @endphp
+                                    @for ($j = 0; $j < 7; $j++)
+                                        @for ($k = 0; $k < count($order->scheduled_days); $k++)
+                                            @php
+                                                $sd = $order->scheduled_days[$k];
+                                                $checked = $start_date->format('l') === $sd->day ? true : false;
+                                                if($checked) {
+                                                    break;
+                                                }
+                                            @endphp
+                                        @endfor
+                                        {!! Form::checkbox('days_scheduled[]', $start_date->format('l'), $checked ?? false, ['class' => 'days_checkbox']) !!} {{ $start_date->format('l') }}
+
+
+                                        @php
+                                            $start_date->addDay()
+                                        @endphp
+                                    @endfor
+                                <p>
+                            @endif
                         </div>
                         <div class="row">
                             @if($order->products[0]->product->treatment_type === 'daily')
@@ -182,6 +208,30 @@
                                             </div>
                                             <div class="w-75 caregiver_div d-none">
                                                 {{ Form::select('caregiver[]', $caregivers, $item->caregiver_id, ['class' => 'form-control custom-select-width w-50 caregivers__', 'required' => true,'placeholder' => 'Select Caregiver']) }}
+                                                <p class="mt-2">Select Days ({{ $order->products[0]->product->no_of_days_per_week }} days / week) <small>{{ $order->products[0]->product->no_of_hrs_per_day }} hours/day</small>:</p>
+                                                <p class="p-2 days_container" data-id="{{ $order->products[0]->product->no_of_days_per_week }}">
+                                                    @php
+                                                        $start_date = Carbon\Carbon::parse($order->start_date)
+                                                    @endphp
+                                                    @for ($j = 0; $j < 7; $j++)
+                                                        @php
+                                                            $checked = false
+                                                        @endphp
+                                                        @for ($k = 0; $k < count($item->scheduling_days); $k++)
+                                                            @php
+                                                                $sd = $item->scheduling_days[$k];
+                                                                $checked = $start_date->format('l') === $sd->day ? true : false;
+                                                                if($checked) {
+                                                                    break;
+                                                                }
+                                                            @endphp
+                                                        @endfor
+                                                        {!! Form::checkbox('days['.$i.'][]', $start_date->format('l'), $checked ?? false, ['class' => 'days_checkbox']) !!} {{ $start_date->format('l') }}
+                                                        @php
+                                                           $start_date->addDay()
+                                                        @endphp
+                                                    @endfor
+                                                <p>
                                             </div>
                                         </div>
                                     @endforeach
@@ -203,6 +253,19 @@
                                             </div>
                                             <div class="w-75 caregiver_div d-none">
                                                 {{ Form::select('caregiver[]', $caregivers, null, ['class' => 'form-control custom-select-width w-50 caregivers__', 'required' => true,'placeholder' => 'Select Caregiver']) }}
+                                                <p class="mt-2">Select Days ({{ $order->products[0]->product->no_of_days_per_week }} days / week) <small>{{ $order->products[0]->product->no_of_hrs_per_day }} hours/day</small>:</p>
+                                                <p class="p-2 days_container" data-id="{{ $order->products[0]->product->no_of_days_per_week }}">
+                                                    @php
+                                                        $start_date = Carbon\Carbon::parse($order->start_date)
+                                                    @endphp
+                                                    @for ($j = 0; $j < 7; $j++)
+
+                                                        {!! Form::checkbox('days['.$i.'][]', $start_date->format('l'), false, ['class' => 'days_checkbox']) !!} {{ $start_date->format('l') }}
+                                                        @php
+                                                           $start_date->addDay()
+                                                        @endphp
+                                                    @endfor
+                                                <p>
                                             </div>
                                         </div>
                                     @endfor
@@ -245,5 +308,31 @@
         function giveCaregiverEveryWhere(val) {
             $('.caregivers__').val(val)
         }
+
+        //
+        $(document).on('change', '#main_divion_of_days .days_checkbox', function() {
+            if($('.days_checkbox[value="'+$(this).val()+'"]').is(':not(:checked)')) {
+                $('.days_checkbox[value="'+$(this).val()+'"]').prop('checked', $(this).is(':checked'))
+            }
+        })
+
+        $(document).on('change', '.days_checkbox', function() {
+            let container = $(this).parents('.days_container')
+            let daysLimit = parseInt(container.attr('data-id'))
+            let checkedBoxes = container.find('.days_checkbox:checked').length
+            if(checkedBoxes === daysLimit) {
+                if($(this).parent().attr('id') === 'main_divion_of_days') {
+                    $('.days_checkbox:not(:checked)').attr('disabled', '')
+                }else {
+                    container.find('.days_checkbox:not(:checked)').attr('disabled', '')
+                }
+            }else{
+                if($(this).parent().attr('id') === 'main_divion_of_days') {
+                    $('.days_checkbox').removeAttr('disabled')
+                }else {
+                    container.find('.days_checkbox').removeAttr('disabled')
+                }
+            }
+        })
     </script>
 @endsection

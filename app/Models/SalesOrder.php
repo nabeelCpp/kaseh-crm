@@ -53,4 +53,8 @@ class SalesOrder extends Model
     public function schedulings() {
         return $this->hasMany(Scheduling::class);
     }
+
+    public function scheduled_days() {
+        return $this->hasMany(SalesOrderScheduledDay::class);
+    }
 }

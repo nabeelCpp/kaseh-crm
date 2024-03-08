@@ -16,4 +16,8 @@ class Scheduling extends Model
         'sales_order_id',
         'scheduled_by'
     ];
+
+    public function scheduling_days() {
+        return $this->hasMany(ScheduledDay::class);
+    }
 }
