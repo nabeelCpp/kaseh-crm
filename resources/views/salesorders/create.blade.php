@@ -81,7 +81,7 @@
         <div class="col-xs-12 col-sm-12 col-md-6">
             <div class="form-group">
                 <strong class="required">Quantity <small id="qty_type"></small></strong>
-                {!! Form::number('quantity', null, ['placeholder' => 'Quantity', 'class' => 'form-control', 'min' => 0, 'required' => '', 'onchange' => 'changeQty(this.value)', 'id' => 'quantity', 'data-id' => '']) !!}
+                {!! Form::number('quantity', null, ['placeholder' => 'Quantity', 'class' => 'form-control', 'min' => 1, 'required' => '', 'onchange' => 'changeQty(this.value)', 'id' => 'quantity', 'data-id' => '']) !!}
             </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-6">
@@ -149,7 +149,7 @@
                     $('#quantity').attr('data-id', p.treatment_type)
                     $('#quantity').val('')
                     $('#total').val('')
-                    $('#scheduling_dates').html('')
+                    populateScheduling(p.treatment_type)
                 }
             });
         }
@@ -163,33 +163,54 @@
         }
 
         $(document).on('change', '#quantity', function() {
-            let type = $(this).attr('data-id')
             let qty = $(this).val()
-            populateScheduling(type, qty)
+            $('#start_date').removeAttr('readonly')
+            let start_date = $('#start_date').val()
+            if(start_date) {
+                addWeeksToDate(start_date, qty)
+            }
         })
 
-        function populateScheduling(type, qty) {
+        $(document).on('change', '#start_date', function() {
+            let date = $(this).val()
+            let qty = $('#quantity').val()
+            addWeeksToDate(date, qty)
+        })
+
+        function addWeeksToDate(date, weeksToAdd) {
+            // Clone the original date to avoid mutating it
+            const newDate = new Date(date);
+
+            // Calculate the number of milliseconds in a week
+            const millisecondsInWeek = 7 * 24 * 60 * 60 * 1000;
+
+            // Calculate the new date by adding the appropriate number of milliseconds
+            newDate.setTime(newDate.getTime() + weeksToAdd * millisecondsInWeek);
+
+            let end_date = newDate.toISOString().split('T')[0];
+            $('#end_date').val(end_date)
+        }
+
+        function populateScheduling(type) {
             let html = [];
             const today = new Date().toISOString().split('T')[0];
-            for (let i = 0; i < qty; i++) {
-                html.push(type === 'daily' ? `<div class="col-xs-12 col-sm-12 col-md-6">
+            html.push(type === 'daily' ? `<div class="col-xs-12 col-sm-12 col-md-6">
+                    <div class="form-group">
+                        <strong>Start Date</strong>
+                        {!! Form::date('start_date', null, ['placeholder' => '', 'class' => 'form-control', 'required' => '', 'min' => '${today}']) !!}
+                    </div>
+                </div>` : `<div class="col-xs-12 col-sm-12 col-md-6">
                         <div class="form-group">
-                            <strong>Day ${i+1}</strong>
-                            {!! Form::date('start_date[]', null, ['placeholder' => '', 'class' => 'form-control', 'required' => '', 'min' => '${today}']) !!}
+                            <strong>Start Date</strong>
+                            {!! Form::date('start_date', null, ['placeholder' => '', 'class' => 'form-control', 'required' => '', 'min' => '${today}', 'readonly' => '', 'id' => 'start_date', 'data-id' => '${type}']) !!}
                         </div>
-                    </div>` : `<div class="col-xs-12 col-sm-12 col-md-6">
-                            <div class="form-group">
-                                <strong>Start Date <small>(Week ${i+1})</small></strong>
-                                {!! Form::date('start_date[]', null, ['placeholder' => '', 'class' => 'form-control', 'required' => '', 'min' => '${today}']) !!}
-                            </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6">
+                        <div class="form-group">
+                            <strong>End Date</strong>
+                            {!! Form::date('end_date', null, ['placeholder' => '', 'class' => 'form-control', 'required' => '', 'min' => '${today}', 'readonly' => '','id' => 'end_date']) !!}
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-6">
-                            <div class="form-group">
-                                <strong>End Date <small>(Week ${i+1})</small></strong>
-                                {!! Form::date('end_date[]', null, ['placeholder' => '', 'class' => 'form-control', 'required' => '', 'min' => '${today}']) !!}
-                            </div>
-                        </div>`)
-            }
+                    </div>`)
             $('#scheduling_dates').html(html.join(''))
         }
     </script>

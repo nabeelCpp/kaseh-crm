@@ -8,13 +8,18 @@ use App\Models\Product;
 use App\Models\Setting;
 use App\Models\SalesOrder;
 use App\Models\SalesOrderProduct;
+use App\Models\SalesOrderScheduledDay;
+use App\Models\ScheduledDay;
+use App\Models\Scheduling;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Illuminate\Console\Scheduling\Schedule;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Carbon;
 
 class SalesOrderController extends Controller
 {
@@ -103,21 +108,28 @@ class SalesOrderController extends Controller
         $order = SalesOrder::findOrFail($id);
         $data['order'] = $order;
         $start_date = $order->start_date;
-        $end_date = $order->end_date;
+        $end_date = $order->end_date ?? $order->start_date;
 
-        $available_caregivers = Caregiver::whereDoesntHave('sales_orders', function ($query) use ($start_date, $end_date) {
-            $query->where(function ($query) use ($start_date, $end_date) {
+        $available_caregivers = Caregiver::whereDoesntHave('sales_orders', function ($query) use ($start_date, $end_date, $id) {
+            $query->where(function ($query) use ($start_date, $end_date, $id) {
                 $query->where('start_date', '<=', $start_date)
-                      ->where('end_date', '>=', $start_date);
-            })->orWhere(function ($query) use ($start_date, $end_date) {
+                      ->where('end_date', '>=', $start_date)
+                      ->where('id', '!=', $id);
+            })->orWhere(function ($query) use ($start_date, $end_date, $id) {
                 $query->where('start_date', '<=', $end_date)
-                      ->where('end_date', '>=', $end_date);
-            })->orWhere(function ($query) use ($start_date, $end_date) {
+                ->where('end_date', '>=', $end_date)
+                ->where('id', '!=', $id);
+            })->orWhere(function ($query) use ($start_date, $end_date, $id) {
                 $query->where('start_date', '>=', $start_date)
-                      ->where('end_date', '<=', $end_date);
+                ->where('end_date', '<=', $end_date)
+                ->where('id', '!=', $id);
             });
         })->get();
-        $data['caregivers'] = $available_caregivers;
+        $caregivers = [];
+        for ($i=0; $i < count($available_caregivers); $i++) {
+            $caregivers[$available_caregivers[$i]->id] = $available_caregivers[$i]->first_name.' '.$available_caregivers[$i]->last_name;
+        }
+        $data['caregivers'] = $caregivers;
         $data['title'] = 'Sales Order #'.$data['order']->order_no;
         return view('salesorders.show', $data);
     }
@@ -127,7 +139,6 @@ class SalesOrderController extends Controller
      */
     public function edit(string $id)
     {
-        dd(request()->has('role'));
         $order = SalesOrder::find($id);
         $title = 'Edit Sales Order #'.$order->order_no;
         $caregivers = Caregiver::all();
@@ -181,16 +192,61 @@ class SalesOrderController extends Controller
 
     public function schedule(Request $request, string $id)
     {
+        $order = SalesOrder::find($id);
         $this->validate($request, [
             'caregiver_id' => 'required',
+            'start_date' => ['required', 'array', 'min:1'],
+            'start_date.*' => ['required'],
+            'caregiver' => ['required', 'array', 'min:1'],
+            'caregiver.*' => ['required'],
+            'days_scheduled' => ['required', 'array', 'min:'.$order->products[0]->product->no_of_days_per_week, 'max:'.$order->products[0]->product->no_of_days_per_week],
+            'days' => ['required', 'array'],
+            'days.*' => ['required', 'array', 'min:'.$order->products[0]->product->no_of_days_per_week, 'max:'.$order->products[0]->product->no_of_days_per_week],
         ]);
         try {
             DB::beginTransaction();
             $input = $request->all();
-            $order = SalesOrder::find($id);
             $order->caregiver_id = $input['caregiver_id'];
             $order->remarks = $input['remarks'] ?? null;
             $order->save();
+
+            //remove old schedules days
+            SalesOrderScheduledDay::where(['sales_order_id' => $id])->delete();
+
+            // add scheduled_days to table
+            foreach ($request->days_scheduled as $key => $value) {
+                SalesOrderScheduledDay::create(['sales_order_id' => $id, 'day' => $value]);
+            }
+
+
+            //remove old schedulings if any
+            Scheduling::where(['sales_order_id' => $id])->delete();
+
+            // remove old scheduling days of schedules
+
+            ScheduledDay::where(['sales_order_id' => $id])->delete();
+
+            // Scheduling here
+            for ($i=0; $i < count($request->start_date); $i++) {
+                $schedule_arr = [
+                    'start_date' => $request->start_date[$i],
+                    'end_date' => $request->end_date[$i] ?? null,
+                    'caregiver_id' => $request->caregiver[$i],
+                    'sales_order_id' => $id,
+                    'scheduled_by' => Auth()->user()->id,
+                ];
+                $schedule = Scheduling::create($schedule_arr);
+                //save all the schedulings days for each schedule.
+                foreach ($request->days[$i] as $key => $value) {
+                    ScheduledDay::create([
+                        'sales_order_id' => $id,
+                        'scheduling_id' => $schedule->id,
+                        'day' => $value
+                    ]);
+                }
+
+            }
+
             DB::commit();
             return redirect()->route('orders.index')->with('success', 'Caregiver Scheduling done successfully!');
         } catch (\Throwable $th) {
