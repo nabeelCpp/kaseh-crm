@@ -25,7 +25,7 @@ class SettingController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**
@@ -33,7 +33,7 @@ class SettingController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -41,7 +41,7 @@ class SettingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**
