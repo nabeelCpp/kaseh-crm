@@ -155,7 +155,7 @@
             @endcan
             @can('settings')
                 <li>
-                    <a href="#"><i class="fa fa-cogs"></i> {{ __('Settings') }}</a>
+                    <a href="{{ route('settings.index') }}"><i class="fa fa-cogs"></i> {{ __('Settings') }}</a>
                 </li>
             @endcan
         </ul>

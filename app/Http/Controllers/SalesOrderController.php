@@ -286,8 +286,8 @@ class SalesOrderController extends Controller
 
     public function downloadSalesOrder($order_no) {
         // Generate the PDF content (replace this with your invoice generation logic)
-        $content = Setting::all();
-        $data['content'] = $content[0]->content;
+        $content = Setting::where(['key' => 'invoice_footer'])->first();
+        $data['content'] = $content->value ?? null;
         $id = (int)$order_no;
         $data['order'] = SalesOrder::find($id);
         $imageUrl = public_path('logo.png');

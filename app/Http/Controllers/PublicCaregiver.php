@@ -9,7 +9,7 @@ class PublicCaregiver extends Controller
     public function CareGiver($id)
     {
         $caregiver = Caregiver::find($id);
-        $title = "Show Caregiver({$caregiver->first_name})";
+        $title = $caregiver->first_name.' '.($caregiver->last_name ?? null);
         $logo = $caregiver->profile;
         $logo_url = asset($logo);
         $caregiver['caregiver_image'] = $logo_url;

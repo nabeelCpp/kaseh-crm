@@ -80,7 +80,7 @@ class CaregiverController extends Controller
     public function edit(string $id) : View
     {
         $caregivers = Caregiver::find($id);
-        $logo = $caregivers->profile;
+        $logo = $caregivers->profile ?? 'storage/uploads/users/user.png';
         $logo_url = asset($logo);
         $caregivers['caregiver_image'] = $logo_url;
         $sex = [
@@ -152,7 +152,7 @@ class CaregiverController extends Controller
     public function show(string $id)
     {
         $customer = Caregiver::find($id);
-        $logo = $customer->profile;
+        $logo = $customer->profile ?? 'storage/uploads/users/user.png';
         $logo_url = asset($logo);
         $customer['caregiver_image'] = $logo_url;
         $title = "Show Caregiver({$customer->first_name})";

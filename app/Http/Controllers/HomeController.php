@@ -41,7 +41,7 @@ class HomeController extends Controller
     }
 
     function updateProfile(Request $request) : RedirectResponse {
-        
+
         $this->validate($request, [
             'image' => 'nullable|image|mimes:jpeg,png,gif|max:2048',
             'name' => 'required',

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Stmt\TryCatch;
 
 class SettingController extends Controller
 {
@@ -25,7 +28,9 @@ class SettingController extends Controller
      */
     public function index()
     {
-
+        $data['title'] = "System Settings";
+        $data['settings'] = Setting::all();
+        return view('settings.index', $data);
     }
 
     /**
@@ -41,7 +46,28 @@ class SettingController extends Controller
      */
     public function store(Request $request)
     {
-
+        $this->validate($request, [
+            'key' => 'required',
+            'value' => 'required',
+        ]);
+        try {
+            DB::beginTransaction();
+            $key = strtolower(str_replace(' ', '_', trim($request->key)));
+            // check key if exists;
+            $key_exist = Setting::where(['key' => $key])->first();
+            if($key_exist) {
+                $key_exist->value = $request->value;
+                $key_exist->save();
+            }else{
+                Setting::create(['key' => $key, 'value' => $request->value, 'type' => 'textarea']);
+            }
+            DB::commit();
+            return redirect()->route('settings.index')->with('success', 'Settings updated successfully!');
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollBack();
+            return redirect()->back()->withInput()->with('error', $th->getMessage());
+        }
     }
 
     /**
