@@ -236,17 +236,26 @@
                                         </div>
                                     @endforeach
                                 @else
+                                        @php
+                                            $start_date__ = null;
+                                        @endphp
                                     @for ($i = 0; $i < $order->products[0]->qty; $i++)
+                                        @php
+                                            $start_date__ = Carbon\Carbon::parse($start_date__ ?? $order->start_date)->addDays($start_date__?1:0)->format('Y-m-d')
+                                        @endphp
                                         <div class="col-xs-12 col-sm-12 col-md-6">
                                             <div class="form-group">
                                                 <strong class="required">Start Date <small>Week {{$i+1}}</small></strong>
-                                                {!! Form::date('start_date[]', ($i === 0? Carbon\Carbon::parse($order->start_date)->addDays($i)->format('Y-m-d') : ''), ['placeholder' => '', 'class' => 'form-control', 'required' => '', 'min' => date('Y-m-d')]) !!}
+                                                {!! Form::date('start_date[]', ($start_date__), ['placeholder' => '', 'class' => 'form-control', 'required' => '', 'min' => date('Y-m-d')]) !!}
                                             </div>
                                         </div>
+                                        @php
+                                            $start_date__ = (Carbon\Carbon::parse($start_date__)->addDays(7)->format('Y-m-d') )
+                                        @endphp
                                         <div class="col-xs-12 col-sm-12 col-md-6 scheduling">
                                             <div class="form-group">
                                                 <strong class="required">End Date <small>Week {{$i+1}}</small></strong>
-                                                {!! Form::date('end_date[]', ($i == $order->products[0]->qty - 1 ? Carbon\Carbon::parse($order->end_date)->addDays($i)->format('Y-m-d') : ''), ['placeholder' => '', 'class' => 'form-control', 'required' => '', 'min' => date('Y-m-d')]) !!}
+                                                {!! Form::date('end_date[]', $start_date__ , ['placeholder' => '', 'class' => 'form-control', 'required' => '', 'min' => date('Y-m-d')]) !!}
                                             </div>
                                             <div class="pull-right">
                                                 <button type="button" class="btn btn-link advance">Advance</button>
