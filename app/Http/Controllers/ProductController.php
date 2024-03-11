@@ -14,7 +14,7 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    protected $treatmentType = ['daily' => 'Daily', 'weekly' => 'Weekly'];
+    protected $treatmentType = ['daily' => 'Daily', 'weekly' => 'Weekly', 'monthly' => 'Monthly'];
     function __construct()
     {
          $this->middleware('permission:product-list|product-create|product-edit|product-delete', ['only' => ['index','show']]);

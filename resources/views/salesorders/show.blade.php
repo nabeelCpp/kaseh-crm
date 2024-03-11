@@ -280,6 +280,63 @@
                                     @endfor
                                 @endif
                             @endif
+
+                            @if($order->products[0]->product->treatment_type === 'monthly')
+                                @if(count($order->schedulings))
+                                    @foreach ($order->schedulings as $i => $item)
+                                        <div class="col-xs-12 col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <strong class="required">Start Date <small>Month {{$i+1}}</small></strong>
+                                                {!! Form::date('start_date[]', $item->start_date, ['placeholder' => '', 'class' => 'form-control', 'required' => '', 'min' => date('Y-m-d')]) !!}
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-12 col-md-6 scheduling">
+                                            <div class="form-group">
+                                                <strong class="required">End Date <small>Month {{$i+1}}</small></strong>
+                                                {!! Form::date('end_date[]', $item->end_date, ['placeholder' => '', 'class' => 'form-control', 'required' => '', 'min' => date('Y-m-d')]) !!}
+                                            </div>
+                                            <div class="pull-right">
+                                                <button type="button" class="btn btn-link advance">Advance</button>
+                                            </div>
+                                            <div class="w-75 caregiver_div d-none">
+                                                {{ Form::select('caregiver[]', $caregivers, $item->caregiver_id, ['class' => 'form-control custom-select-width w-50 caregivers__', 'required' => true,'placeholder' => 'Select Caregiver']) }}
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @else
+                                        @php
+                                            $start_date__ = null;
+                                        @endphp
+                                    @for ($i = 0; $i < $order->products[0]->qty; $i++)
+                                        @php
+                                            $start_date__ = Carbon\Carbon::parse($start_date__ ?? $order->start_date)->addDays($start_date__?1:0)->format('Y-m-d')
+                                        @endphp
+                                        <div class="col-xs-12 col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <strong class="required">Start Date <small>Month {{$i+1}}</small></strong>
+                                                {!! Form::date('start_date[]', ($start_date__), ['placeholder' => '', 'class' => 'form-control', 'required' => '', 'min' => date('Y-m-d')]) !!}
+                                            </div>
+                                        </div>
+                                        @php
+                                            $start_date__ = (Carbon\Carbon::parse($start_date__)->addMonths(1)->format('Y-m-d') )
+                                        @endphp
+                                        <div class="col-xs-12 col-sm-12 col-md-6 scheduling">
+                                            <div class="form-group">
+                                                <strong class="required">End Date <small>Month {{$i+1}}</small></strong>
+                                                {!! Form::date('end_date[]', $start_date__ , ['placeholder' => '', 'class' => 'form-control', 'required' => '', 'min' => date('Y-m-d')]) !!}
+                                            </div>
+                                            <div class="pull-right">
+                                                <button type="button" class="btn btn-link advance">Advance</button>
+                                            </div>
+                                            <div class="w-75 caregiver_div d-none">
+                                                {{ Form::select('caregiver[]', $caregivers, null, ['class' => 'form-control custom-select-width w-50 caregivers__', 'required' => true,'placeholder' => 'Select Caregiver']) }}
+
+
+                                            </div>
+                                        </div>
+                                    @endfor
+                                @endif
+                            @endif
                         </div>
 
                         <div class="form-group text-center py-5">

@@ -144,7 +144,7 @@
                 if(p.id === parseInt(id)) {
                     price = p.price
                     $('#unit_price').val(price)
-                    $('#qty_type').text(p.treatment_type === 'weekly' ? 'No. of Weeks' : 'No. of Days')
+                    $('#qty_type').text(`No. of ${p.treatment_type === 'weekly' ? 'Weeks' : (p.treatment_type === 'daily' ? 'Days' : 'Months')}`)
                     // Add data-id weekly/daily for displaying dates fields accordingly when quantity changes
                     $('#quantity').attr('data-id', p.treatment_type)
                     $('#quantity').val('')
@@ -172,9 +172,14 @@
         })
 
         $(document).on('change', '#start_date', function() {
+            let type = $(this).attr('data-id')
             let date = $(this).val()
             let qty = $('#quantity').val()
-            addWeeksToDate(date, qty)
+            if(type === 'weekly') {
+                addWeeksToDate(date, qty)
+            }else if(type === 'monthly') {
+                addMonthToDate(date, qty)
+            }
         })
 
         function addWeeksToDate(date, weeksToAdd) {
@@ -187,6 +192,31 @@
             // Calculate the new date by adding the appropriate number of milliseconds
             newDate.setTime(newDate.getTime() + weeksToAdd * millisecondsInWeek);
 
+            let end_date = newDate.toISOString().split('T')[0];
+            $('#end_date').val(end_date)
+        }
+
+        function addMonthToDate(date, qty) {
+            // Clone the original date to avoid mutating it
+            const newDate = new Date(date);
+
+            // Get the current month
+            const currentMonth = newDate.getMonth();
+
+            // Calculate the next month
+            let nextMonth = currentMonth + parseInt(qty);
+
+            // Check if the next month exceeds December
+            if (nextMonth > 11) {
+                nextMonth = 0; // January
+                newDate.setFullYear(newDate.getFullYear() + 1); // Increment year
+            }
+
+            // Set the date to the next month
+            newDate.setMonth(nextMonth);
+
+            // Return the date after one month
+            // return newDate;
             let end_date = newDate.toISOString().split('T')[0];
             $('#end_date').val(end_date)
         }

@@ -103,5 +103,9 @@
                 }
             }
         }
+
+        @if(old('treatment_type') || $product->treatment_type)
+            changeTreatementType('{{ old("treatment_type") ?? $product->treatment_type }}')
+        @endif
     </script>
 @endsection

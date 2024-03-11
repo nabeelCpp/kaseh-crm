@@ -34,12 +34,14 @@
                 </div>
             </div>
         @endif
-        <div class="col-xs-12 col-sm-12 @if($product->treatment_type === 'weekly') col-md-4 @else col-md-6 @endif">
-            <div class="form-group">
-                <label><strong>No. of hours per day</strong></label>
-                <input type="text" readonly class="form-control" value="{{ $product->no_of_hrs_per_day }}">
+        @if($product->treatment_type === 'weekly' || $product->treatment_type === 'daily')
+            <div class="col-xs-12 col-sm-12 @if($product->treatment_type === 'weekly') col-md-4 @else col-md-6 @endif">
+                <div class="form-group">
+                    <label><strong>No. of hours per day</strong></label>
+                    <input type="text" readonly class="form-control" value="{{ $product->no_of_hrs_per_day }}">
+                </div>
             </div>
-        </div>
+        @endif
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
                 <strong>Price:</strong>
