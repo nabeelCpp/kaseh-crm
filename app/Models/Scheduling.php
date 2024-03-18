@@ -20,4 +20,8 @@ class Scheduling extends Model
     public function scheduling_days() {
         return $this->hasMany(ScheduledDay::class);
     }
+
+    public function caregiver() {
+        return $this->belongsTo(Caregiver::class);
+    }
 }

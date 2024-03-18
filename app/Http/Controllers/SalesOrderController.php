@@ -261,6 +261,17 @@ class SalesOrderController extends Controller
                         ]);
                     }
                 }
+
+                // if product typ is daily
+                if($order->products[0]->product->treatment_type === 'daily') {
+                    $date = Carbon::parse($request->start_date[$i]);
+                    ScheduledDay::create([
+                        'sales_order_id' => $id,
+                        'scheduling_id' => $schedule->id,
+                        'day' => $date->format('l'),
+                        'date' => $request->start_date[$i]
+                    ]);
+                }
             }
 
             DB::commit();
@@ -271,22 +282,11 @@ class SalesOrderController extends Controller
         }
     }
 
-    // public function fetchSchedulings($id)
-    // {
-    //     $order = SalesOrder::findOrFail($id);
-    //     $schedulings =
-    //     $schedulings = [];
-    //     foreach ($order->schedulings as $key => $scheduling) {
-    //         $data = [];
-    //         $data['scheduling'] = $scheduling; // Include the scheduling information
-    //         foreach ($scheduling->scheduling_days as $key => $value) {
-    //             return response()->json($value);
-    //         }
-    //         $data['scheduling_days'] = $scheduling->scheduling_days[0]; // Include the scheduling days related to this scheduling
-    //         $schedulings[] = $data;
-    //     }
-    //     return response()->json($schedulings);
-    // }
+    public function fetchSchedulings($id)
+    {
+        $scheduling = Scheduling::with('scheduling_days', 'caregiver')->findOrFail($id);
+        return response()->json($scheduling);
+    }
 
     /**
      * Remove the specified resource from storage.

@@ -166,10 +166,11 @@
                                         <div class="col-xs-12 col-sm-12 col-md-6 scheduling">
                                             <div class="form-group">
                                                 <strong  class="required">Start Date <small>Day {{ $i + 1 }}</small></strong>
-                                                {!! Form::date('start_date[]', $item->start_date, ['placeholder' => '', 'class' => 'form-control', 'required' => '', 'min' => date('Y-m-d')]) !!}
+                                                {!! Form::date('start_date[]', $item->start_date, ['placeholder' => '', 'class' => 'form-control', 'required' => '', 'min' => date('Y-m-d'), 'readonly' => true]) !!}
                                             </div>
                                             <div class="pull-right">
                                                 <button type="button" class="btn btn-link advance">Advance</button>
+                                                <button type="button" class="btn btn-sm btn-info"  data-toggle="modal" data-target="#openSchedulingsModal" onclick="openSchdulings({{ $item->id }})"><i class="fa fa-eye"></i></button>
                                             </div>
                                             <div class="w-75 caregiver_div d-none">
                                                 {{ Form::select('caregiver[]', $caregivers, $item->caregiver_id, ['class' => 'form-control custom-select-width w-50 caregivers__', 'required' => true, 'placeholder' => 'Select Caregiver']) }}
@@ -201,16 +202,17 @@
                                         <div class="col-xs-12 col-sm-12 col-md-6">
                                             <div class="form-group">
                                                 <strong class="required">Start Date <small>Week {{$i+1}}</small></strong>
-                                                {!! Form::date('start_date[]', $item->start_date, ['placeholder' => '', 'class' => 'form-control', 'required' => '', 'min' => date('Y-m-d')]) !!}
+                                                {!! Form::date('start_date[]', $item->start_date, ['placeholder' => '', 'class' => 'form-control', 'required' => '', 'min' => date('Y-m-d'), 'readonly' => true]) !!}
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-md-6 scheduling">
                                             <div class="form-group">
                                                 <strong class="required">End Date <small>Week {{$i+1}}</small></strong>
-                                                {!! Form::date('end_date[]', $item->end_date, ['placeholder' => '', 'class' => 'form-control', 'required' => '', 'min' => date('Y-m-d')]) !!}
+                                                {!! Form::date('end_date[]', $item->end_date, ['placeholder' => '', 'class' => 'form-control', 'required' => '', 'min' => date('Y-m-d'), 'readonly' => true]) !!}
                                             </div>
                                             <div class="pull-right">
                                                 <button type="button" class="btn btn-link advance">Advance</button>
+                                                <button type="button" class="btn btn-sm btn-info"  data-toggle="modal" data-target="#openSchedulingsModal" onclick="openSchdulings({{ $item->id }})"><i class="fa fa-eye"></i></button>
                                             </div>
                                             <div class="caregiver_div d-none">
                                                 {{ Form::select('caregiver[]', $caregivers, $item->caregiver_id, ['class' => 'form-control custom-select-width w-50 caregivers__', 'required' => true,'placeholder' => 'Select Caregiver']) }}
@@ -297,16 +299,17 @@
                                         <div class="col-xs-12 col-sm-12 col-md-6">
                                             <div class="form-group">
                                                 <strong class="required">Start Date <small>Month {{$i+1}}</small></strong>
-                                                {!! Form::date('start_date[]', $item->start_date, ['placeholder' => '', 'class' => 'form-control', 'required' => '', 'min' => date('Y-m-d')]) !!}
+                                                {!! Form::date('start_date[]', $item->start_date, ['placeholder' => '', 'class' => 'form-control', 'required' => '', 'min' => date('Y-m-d'), 'readonly' => true]) !!}
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-md-6 scheduling">
                                             <div class="form-group">
                                                 <strong class="required">End Date <small>Month {{$i+1}}</small></strong>
-                                                {!! Form::date('end_date[]', $item->end_date, ['placeholder' => '', 'class' => 'form-control', 'required' => '', 'min' => date('Y-m-d')]) !!}
+                                                {!! Form::date('end_date[]', $item->end_date, ['placeholder' => '', 'class' => 'form-control', 'required' => '', 'min' => date('Y-m-d'), 'readonly' => true]) !!}
                                             </div>
                                             <div class="pull-right">
                                                 <button type="button" class="btn btn-link advance">Advance</button>
+                                                <button type="button" class="btn btn-sm btn-info"  data-toggle="modal" data-target="#openSchedulingsModal" onclick="openSchdulings({{ $item->id }})"><i class="fa fa-eye"></i></button>
                                             </div>
                                             <div class="caregiver_div d-none">
                                                 {{ Form::select('caregiver[]', $caregivers, $item->caregiver_id, ['class' => 'form-control custom-select-width w-50 caregivers__', 'required' => true,'placeholder' => 'Select Caregiver']) }}
@@ -392,6 +395,24 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="openSchedulingsModal" tabindex="-1" role="dialog" aria-labelledby="openSchedulingsModalTitle"
+        aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Scheduling</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('js')
     <script>
@@ -444,5 +465,60 @@
                 }
             }
         })
+
+        function openSchdulings(id) {
+            let url = `{{ url('/schedulings') }}/${id}`
+            let status = ['assign', 'failed', 'approve']
+            $.ajax({
+                url: url,
+                type: 'GET',
+                beforeSend: function() {
+                    $('#openSchedulingsModal .modal-body').html(`<div class="text-center">
+                        <i class="fa fa-spin fa-spinner"></i> Loading
+                    </div>`)
+                },
+                success: function(data) {
+                    let table = `
+                        <table class="table table-striped table-bordered dataTable no-footer">
+                            <thead>
+                                <tr>
+                                    <th>Sn#</th>
+                                    <th>Product</th>
+                                    <th>Care Giver</th>
+                                    <th>Customer</th>
+                                    <th>Service Dates</th>
+                                    <th>Expected Starting Time</th>
+                                    <th>Expected Hours</th>
+                                    <th>Work Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${data.scheduling_days.map((d, i) => {
+                                    return `
+                                        <tr>
+                                            <td>${i+1}</td>
+                                            <td>{{ $order->products[0]->product->name }}</td>
+                                            <td>${data.caregiver.first_name} ${data.caregiver.last_name}</td>
+                                            <td>{{ $order->customer->first_name }} {{ $order->customer->last_name ?? null }}</td>
+                                            <td>${new Date(d.date).toDateString()}</td>
+                                            <td>{{ $order->scheduled_days[0]->time ?? null }}</td>
+                                            <td>{{ $order->products[0]->product->no_of_hrs_per_day }}</td>
+                                            <td><div class="input-group-btn">
+														<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">${status.filter(s => s === d.status).join('')} <span class="caret"></span>
+														</button>
+														<ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                                            ${status.map(s => s !== d.status ? `<li><a class="dropdown-item" href="#">${s}</a>
+															</li>`:'').join('')}
+														</ul>
+													</div>
+                                            </td>
+                                        </tr>`
+                                }).join('')}
+                            </tbody>
+                        </table>`
+                        $('#openSchedulingsModal .modal-body').html(table)
+                }
+            })
+        }
     </script>
 @endsection
