@@ -31,10 +31,10 @@ class SalesOrderController extends Controller
      */
     function __construct()
     {
-         $this->middleware('permission:salesorder-list|salesorder-create|salesorder-edit|salesorder-delete', ['only' => ['index','show']]);
-         $this->middleware('permission:salesorder-create', ['only' => ['create','store']]);
-         $this->middleware('permission:salesorder-edit', ['only' => ['edit','update']]);
-         $this->middleware('permission:salesorder-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:salesorder-list|salesorder-create|salesorder-edit|salesorder-delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:salesorder-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:salesorder-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:salesorder-delete', ['only' => ['destroy']]);
     }
 
     /**
@@ -45,7 +45,7 @@ class SalesOrderController extends Controller
         $title = "Sales Orders";
         $dataTable = true;
         $data = SalesOrder::all();
-        return view('salesorders.index',compact('data','title', 'dataTable'));
+        return view('salesorders.index', compact('data', 'title', 'dataTable'));
     }
 
     /**
@@ -62,7 +62,7 @@ class SalesOrderController extends Controller
         $caregivers = Caregiver::all();
         $customers  = Customer::all();
         $products = Product::all();
-        return view('salesorders.create',compact('title','products', 'customers','caregivers', 'salesAgents'));
+        return view('salesorders.create', compact('title', 'products', 'customers', 'caregivers', 'salesAgents'));
     }
 
     /**
@@ -71,7 +71,7 @@ class SalesOrderController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            // 'caregiver_id' => 'required',
+            'user_id' => isset($request->user_id) ? 'required' : '',
             'customer_id' => 'required',
             'product_id' => 'required',
             'quantity' => 'required|numeric|min:1',
@@ -81,7 +81,7 @@ class SalesOrderController extends Controller
         try {
             DB::beginTransaction();
             $input = $request->all();
-            $input['user_id'] = Auth()->user()->id;
+            $input['user_id'] = $request->user_id ?? Auth()->user()->id;
             $order = SalesOrder::create($input);
             SalesOrderProduct::create([
                 'sales_order_id' => $order->id,
@@ -96,8 +96,6 @@ class SalesOrderController extends Controller
             DB::rollBack();
             return redirect()->back()->withInput()->with('error', $th->getMessage());
         }
-
-
     }
 
     /**
@@ -113,24 +111,24 @@ class SalesOrderController extends Controller
         $available_caregivers = Caregiver::whereDoesntHave('sales_orders', function ($query) use ($start_date, $end_date, $id) {
             $query->where(function ($query) use ($start_date, $end_date, $id) {
                 $query->where('start_date', '<=', $start_date)
-                      ->where('end_date', '>=', $start_date)
-                      ->where('id', '!=', $id);
+                    ->where('end_date', '>=', $start_date)
+                    ->where('id', '!=', $id);
             })->orWhere(function ($query) use ($start_date, $end_date, $id) {
                 $query->where('start_date', '<=', $end_date)
-                ->where('end_date', '>=', $end_date)
-                ->where('id', '!=', $id);
+                    ->where('end_date', '>=', $end_date)
+                    ->where('id', '!=', $id);
             })->orWhere(function ($query) use ($start_date, $end_date, $id) {
                 $query->where('start_date', '>=', $start_date)
-                ->where('end_date', '<=', $end_date)
-                ->where('id', '!=', $id);
+                    ->where('end_date', '<=', $end_date)
+                    ->where('id', '!=', $id);
             });
         })->get();
         $caregivers = [];
-        for ($i=0; $i < count($available_caregivers); $i++) {
-            $caregivers[$available_caregivers[$i]->id] = $available_caregivers[$i]->first_name.' '.$available_caregivers[$i]->last_name;
+        for ($i = 0; $i < count($available_caregivers); $i++) {
+            $caregivers[$available_caregivers[$i]->id] = $available_caregivers[$i]->first_name . ' ' . $available_caregivers[$i]->last_name;
         }
         $data['caregivers'] = $caregivers;
-        $data['title'] = 'Sales Order #'.$data['order']->order_no;
+        $data['title'] = 'Sales Order #' . $data['order']->order_no;
         return view('salesorders.show', $data);
     }
 
@@ -140,11 +138,11 @@ class SalesOrderController extends Controller
     public function edit(string $id)
     {
         $order = SalesOrder::find($id);
-        $title = 'Edit Sales Order #'.$order->order_no;
+        $title = 'Edit Sales Order #' . $order->order_no;
         $caregivers = Caregiver::all();
         $customers  = Customer::all();
         $products = Product::all();
-        return view('salesorders.edit',compact('title','products', 'customers','caregivers', 'order'));
+        return view('salesorders.edit', compact('title', 'products', 'customers', 'caregivers', 'order'));
     }
 
     /**
@@ -193,19 +191,18 @@ class SalesOrderController extends Controller
     public function schedule(Request $request, string $id)
     {
         $order = SalesOrder::find($id);
-        if($order->products[0]->product->treatment_type === 'weekly') {
+        if ($order->products[0]->product->treatment_type === 'weekly') {
             $this->validate($request, [
                 'caregiver_id' => 'required',
                 'start_date' => ['required', 'array', 'min:1'],
                 'start_date.*' => ['required'],
                 'caregiver' => ['required', 'array', 'min:1'],
                 'caregiver.*' => ['required'],
-                'days_scheduled' => ['required', 'array', 'min:'.$order->products[0]->product->no_of_days_per_week, 'max:'.$order->products[0]->product->no_of_days_per_week],
+                'days_scheduled' => ['required', 'array', 'min:' . $order->products[0]->product->no_of_days_per_week, 'max:' . $order->products[0]->product->no_of_days_per_week],
                 'days' => ['required', 'array'],
-                'days.*' => ['required', 'array', 'min:'.$order->products[0]->product->no_of_days_per_week, 'max:'.$order->products[0]->product->no_of_days_per_week],
+                'days.*' => ['required', 'array', 'min:' . $order->products[0]->product->no_of_days_per_week, 'max:' . $order->products[0]->product->no_of_days_per_week],
             ]);
-
-        }else {
+        } else {
             $this->validate($request, [
                 'caregiver_id' => 'required',
                 'start_date' => ['required', 'array', 'min:1'],
@@ -228,9 +225,9 @@ class SalesOrderController extends Controller
             SalesOrderScheduledDay::where(['sales_order_id' => $id])->delete();
 
             // add scheduled_days to table
-            if(isset($request->days_scheduled)) {
+            if (isset($request->days_scheduled)) {
                 foreach ($request->days_scheduled as $key => $value) {
-                    SalesOrderScheduledDay::create(['sales_order_id' => $id, 'day' => $value]);
+                    SalesOrderScheduledDay::create(['sales_order_id' => $id, 'day' => $value, 'time' => $request->time]);
                 }
             }
 
@@ -243,7 +240,7 @@ class SalesOrderController extends Controller
             ScheduledDay::where(['sales_order_id' => $id])->delete();
 
             // Scheduling here
-            for ($i=0; $i < count($request->start_date); $i++) {
+            for ($i = 0; $i < count($request->start_date); $i++) {
                 $schedule_arr = [
                     'start_date' => $request->start_date[$i],
                     'end_date' => $request->end_date[$i] ?? null,
@@ -253,16 +250,17 @@ class SalesOrderController extends Controller
                 ];
                 $schedule = Scheduling::create($schedule_arr);
                 //save all the schedulings days for each schedule.
-                if(isset($request->days[$i])) {
+                if (isset($request->days[$i])) {
                     foreach ($request->days[$i] as $key => $value) {
+                        $date = Carbon::parse($value);
                         ScheduledDay::create([
                             'sales_order_id' => $id,
                             'scheduling_id' => $schedule->id,
-                            'day' => $value
+                            'day' => $date->format('l'),
+                            'date' => $value
                         ]);
                     }
                 }
-
             }
 
             DB::commit();
@@ -272,6 +270,23 @@ class SalesOrderController extends Controller
             return redirect()->back()->withInput()->with('error', $th->getMessage());
         }
     }
+
+    // public function fetchSchedulings($id)
+    // {
+    //     $order = SalesOrder::findOrFail($id);
+    //     $schedulings =
+    //     $schedulings = [];
+    //     foreach ($order->schedulings as $key => $scheduling) {
+    //         $data = [];
+    //         $data['scheduling'] = $scheduling; // Include the scheduling information
+    //         foreach ($scheduling->scheduling_days as $key => $value) {
+    //             return response()->json($value);
+    //         }
+    //         $data['scheduling_days'] = $scheduling->scheduling_days[0]; // Include the scheduling days related to this scheduling
+    //         $schedulings[] = $data;
+    //     }
+    //     return response()->json($schedulings);
+    // }
 
     /**
      * Remove the specified resource from storage.
@@ -284,7 +299,7 @@ class SalesOrderController extends Controller
             if (!$order) {
                 throw new \Exception("Sales Order not found");
             }
-            if(count($order->products)){
+            if (count($order->products)) {
                 // Delete associated products
                 foreach ($order->products as $key => $product) {
                     $product->delete();
@@ -294,15 +309,16 @@ class SalesOrderController extends Controller
             $order->delete();
             DB::commit();
             return redirect()->route('orders.index')
-                            ->with('success', 'Sales Order deleted successfully!');
+                ->with('success', 'Sales Order deleted successfully!');
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->route('orders.index')
-                            ->with('error', 'Failed to delete Sales Order: ' . $e->getMessage());
+                ->with('error', 'Failed to delete Sales Order: ' . $e->getMessage());
         }
     }
 
-    public function downloadSalesOrder($order_no) {
+    public function downloadSalesOrder($order_no)
+    {
         // Generate the PDF content (replace this with your invoice generation logic)
         $content = Setting::where(['key' => 'invoice_footer'])->first();
         $data['content'] = $content->value ?? null;
@@ -327,7 +343,7 @@ class SalesOrderController extends Controller
         $dompdf->render();
 
         // Generate the PDF file name (you can customize this as needed)
-        $filename = 'sales_order_invoice_'.$data['order']['order_no'] .'_'. date('YmdHis') . '.pdf';
+        $filename = 'sales_order_invoice_' . $data['order']['order_no'] . '_' . date('YmdHis') . '.pdf';
 
         // Stream the PDF to the browser for download
         return $dompdf->stream($filename);

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class ScheduledDay extends Model
 {
     use HasFactory;
-    protected $fillable = ['scheduling_id', 'sales_order_id', 'day'];
+    protected $fillable = ['scheduling_id', 'sales_order_id', 'day', 'date', 'status'];
 
     public function schedule()  {
         return $this->belongsTo(Scheduling::class);

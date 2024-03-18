@@ -83,16 +83,16 @@
                 if($('#hrs_per_day_div').hasClass('d-none')) {
                     $('#hrs_per_day_div').removeClass('d-none')
                 }
-                $('#days_per_week_div').find('input[name="days_per_week"]').val('')
-                $('#days_per_week_div').find('input[name="days_per_week"]').removeAttr('required')
-            }else if(value === 'weekly') {
+                $('input[name="no_of_days_per_week"]').val('')
+                $('input[name="no_of_days_per_week"]').removeAttr('required')
+            }else if(value === 'weekly' || value == 'monthly') {
                 if($('#days_per_week_div').hasClass('d-none')) {
                     $('#days_per_week_div').removeClass('d-none')
                 }
                 if($('#hrs_per_day_div').hasClass('d-none')) {
                     $('#hrs_per_day_div').removeClass('d-none')
                 }
-                $('#days_per_week_div').find('input[name="days_per_week"]').attr('required', true)
+                $('input[name="no_of_days_per_week"]').attr('required', true)
             } else {
                 if(!$('#days_per_week_div').hasClass('d-none')) {
                     $('#days_per_week_div').addClass('d-none')
@@ -101,6 +101,11 @@
                 if(!$('#hrs_per_day_div').hasClass('d-none')) {
                     $('#hrs_per_day_div').addClass('d-none')
                 }
+
+                $('input[name="no_of_days_per_week"]').val('')
+                $('input[name="no_of_days_per_week"]').removeAttr('required')
+                $('input[name="no_of_hrs_per_day"]').val('')
+                $('input[name="no_of_hrs_per_day"]').removeAttr('required')
             }
         }
 

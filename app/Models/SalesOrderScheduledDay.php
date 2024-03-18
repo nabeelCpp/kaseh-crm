@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class SalesOrderScheduledDay extends Model
 {
     use HasFactory;
-    protected $fillable = ['day', 'sales_order_id'];
+    protected $fillable = ['day', 'sales_order_id', 'time'];
 
     public function salesorder() {
         return $this->belongsTo(SalesOrder::class);

@@ -62,21 +62,18 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-2">
-            <strong @if(strtolower(auth()->user()->getRoleNames()[0]) === 'admin') class="required" @endif>Sales Person</strong>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-6">
-            <div class="form-group">
-                @if(strtolower(auth()->user()->getRoleNames()[0]) === 'admin')
-                    {{ Form::select('sales_person', $salesAgents, null, ['class' => 'form-control', 'placeholder' => 'Select Sales Person', 'required' => true]) }}
-                @else
-                    <input type="text" class="form-control" id="sales_person" name="sales_person"
-                    value="{{ Auth::user()->name }}" readonly>
-                @endif
+    @if(strtolower(auth()->user()->getRoleNames()[0]) === 'admin')
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-2">
+                <strong class="required">Sales Person</strong>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6">
+                <div class="form-group">
+                    {{ Form::select('user_id', $salesAgents, null, ['class' => 'form-control', 'placeholder' => 'Select Sales Person', 'required' => true]) }}
+                </div>
             </div>
         </div>
-    </div>
+    @endif
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-6">
             <div class="form-group">

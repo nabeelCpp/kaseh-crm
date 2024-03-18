@@ -23,27 +23,21 @@
         </div>
         <div class="col-xs-12 col-sm-12 col-md-6">
             <div class="form-group">
-                <select name="caregiver_id" class="form-control custom-select-width" required>
-                    <option value="" disabled selected>Select Caregiver</option>
-                    @foreach ($caregivers as $caregiver)
-                        <option value="{{ $caregiver->id }}" {{ old('caregiver_id') == $caregiver->id || $caregiver->id == $order->caregiver_id ? 'selected' : '' }}>{{ $caregiver->first_name }}</option>
-                    @endforeach
-                </select>
+                <input type="text" readonly
+                    value="{{ $order->caregiver->first_name ?? '-' }} {{ $order->caregiver->last_name ?? null }}"
+                    class="form-control">
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-2">
-            <strong>Customers</strong>
+            <strong>Customer</strong>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-6">
             <div class="form-group">
-                <select name="customer_id" class="form-control custom-select-width" required>
-                    <option value="" disabled selected>Select Customer</option>
-                    @foreach ($customers as $customer)
-                        <option value="{{ $customer->id }}" {{ old('customer_id') == $customer->id || $customer->id === $order->customer_id ? 'selected' : '' }}>{{ $customer->first_name }}</option>
-                    @endforeach
-                </select>
+                <input type="text" readonly
+                    value="{{ $order->customer->first_name }} {{ $order->customer->last_name ?? null }}"
+                    class="form-control">
             </div>
         </div>
     </div>
@@ -53,12 +47,9 @@
         </div>
         <div class="col-xs-12 col-sm-12 col-md-6">
             <div class="form-group">
-                <select name="product_id" id="productDropdown" class="form-control custom-select-width" onchange="populateProductDetails(this.value)" required>
-                    <option value="" disabled selected>Select Product</option>
-                    @foreach ($products as $product)
-                        <option value="{{ $product->id }}" {{ old('product_id') == $product->id || $product->id === $order->products[0]->product_id ? 'selected' : '' }}>{{ $product->name }}</option>
-                    @endforeach
-                </select>
+                <input type="text" readonly
+                    value="{{ $order->products[0]->product->name }} ({{ $order->products[0]->product->treatment_type }})"
+                    class="form-control">
             </div>
         </div>
     </div>
@@ -69,7 +60,7 @@
         <div class="col-xs-12 col-sm-12 col-md-6">
             <div class="form-group">
                 <input type="text" class="form-control" id="sales_person" name="sales_person"
-                    value="{{ Auth::user()->name }}" readonly>
+                    value="{{ $order->user->name }}" readonly>
             </div>
         </div>
     </div>
@@ -155,8 +146,8 @@
             });
         }
 
-        @if (old('product_id'))
-            populateProductDetails({{ old('product_id') }})
+        @if (old('product_id') || $order->product_id)
+            populateProductDetails({{ old('product_id') ?? $order->product_id }})
         @endif
 
         function changeQty(qty) {

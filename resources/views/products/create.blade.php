@@ -81,7 +81,7 @@
                 }
                 $('input[name="no_of_days_per_week"]').val('')
                 $('input[name="no_of_days_per_week"]').removeAttr('required')
-            }else if(value === 'weekly') {
+            }else if(value === 'weekly' || value == 'monthly') {
                 if($('#days_per_week_div').hasClass('d-none')) {
                     $('#days_per_week_div').removeClass('d-none')
                 }

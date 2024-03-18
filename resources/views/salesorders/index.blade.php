@@ -72,7 +72,7 @@
     <!-- Modal -->
     <div class="modal fade" id="salesOrderModal" tabindex="-1" role="dialog" aria-labelledby="salesOrderModalTitle"
         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLongTitle">Sales Order #<span id="sales_order_no"></span></h5>
@@ -81,8 +81,32 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <a href="#" class="btn btn-primary" id="download_quotation_url">Download Quotation</a>
-                    <a href="#" class="btn btn-success" data-dismiss="modal">Confirm Sales Order</a>
+                    <table class="table table-striped table-bordered dataTable no-footer">
+                        <thead>
+                            <tr>
+                                <th>Sn#</th>
+                                <th>Product</th>
+                                <th>Care Giver</th>
+                                <th>Customer</th>
+                                <th>Service Dates</th>
+                                <th>Expected Starting Time</th>
+                                <th>Expected Hours</th>
+                                <th>Work Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Prod</td>
+                                <td>Prod</td>
+                                <td>1</td>
+                                <td>Prod</td>
+                                <td>Prod</td>
+                                <td>1</td>
+                                <td>Prod</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
