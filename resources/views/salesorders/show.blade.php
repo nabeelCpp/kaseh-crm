@@ -82,7 +82,7 @@
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
                 <strong>Remarks</strong>
-                <textarea name="remarks" id="remarks" cols="30" rows="10" class="form-control" readonly>{{ $order->remarks ?? '-' }}</textarea>
+                <textarea name="remarks" cols="30" rows="10" class="form-control" readonly>{{ $order->remarks ?? '-' }}</textarea>
             </div>
         </div>
     </div>
@@ -170,7 +170,6 @@
                                             </div>
                                             <div class="pull-right">
                                                 <button type="button" class="btn btn-link advance">Advance</button>
-                                                <button type="button" class="btn btn-sm btn-info"  data-toggle="modal" data-target="#openSchedulingsModal" onclick="openSchdulings({{ $item->id }})"><i class="fa fa-eye"></i></button>
                                             </div>
                                             <div class="w-75 caregiver_div d-none">
                                                 {{ Form::select('caregiver[]', $caregivers, $item->caregiver_id, ['class' => 'form-control custom-select-width w-50 caregivers__', 'required' => true, 'placeholder' => 'Select Caregiver']) }}
@@ -212,7 +211,6 @@
                                             </div>
                                             <div class="pull-right">
                                                 <button type="button" class="btn btn-link advance">Advance</button>
-                                                <button type="button" class="btn btn-sm btn-info"  data-toggle="modal" data-target="#openSchedulingsModal" onclick="openSchdulings({{ $item->id }})"><i class="fa fa-eye"></i></button>
                                             </div>
                                             <div class="caregiver_div d-none">
                                                 {{ Form::select('caregiver[]', $caregivers, $item->caregiver_id, ['class' => 'form-control custom-select-width w-50 caregivers__', 'required' => true,'placeholder' => 'Select Caregiver']) }}
@@ -309,7 +307,6 @@
                                             </div>
                                             <div class="pull-right">
                                                 <button type="button" class="btn btn-link advance">Advance</button>
-                                                <button type="button" class="btn btn-sm btn-info"  data-toggle="modal" data-target="#openSchedulingsModal" onclick="openSchdulings({{ $item->id }})"><i class="fa fa-eye"></i></button>
                                             </div>
                                             <div class="caregiver_div d-none">
                                                 {{ Form::select('caregiver[]', $caregivers, $item->caregiver_id, ['class' => 'form-control custom-select-width w-50 caregivers__', 'required' => true,'placeholder' => 'Select Caregiver']) }}
@@ -395,26 +392,96 @@
             </div>
         </div>
     </div>
+    <table class="table table-striped table-bordered dataTable no-footer">
+        <thead>
+            <tr>
+                <th>Sn#</th>
+                <th>Product</th>
+                <th>Care Giver</th>
+                <th>Customer</th>
+                <th>Service Dates</th>
+                <th>Expected Starting Time</th>
+                <th>Expected Hours</th>
+                <th>Work Status</th>
+                <th>Remarks</th>
+                <th>Reviewed By</th>
+                <th>Reason For Refuse</th>
+                <th>Invoiced?</th>
+                <th>Invoice</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($order->schedulingsDays as $key => $day)
+                <tr>
+                    <td>{{ $key + 1 }}</td>
+                    <td>{{ $order->products[0]->product->name }}</td>
+                    <td>{{ $day->scheduling->caregiver->first_name}} {{$day->scheduling->caregiver->last_name ?? null}}</td>
+                    <td>{{ $order->customer->first_name }} {{ $order->customer->last_name ?? null }}</td>
+                    <td>{{date('D d M Y', strtotime($day->date))}}</td>
+                    <td>{{ $order->scheduled_days[0]->time ?? null }}</td>
+                    <td>{{ $order->products[0]->product->no_of_hrs_per_day }}</td>
+                    <td>
+                        <div class="input-group-btn">
+                            @if ($day->status === 'assign')
+                                <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false" @if(date('Y-m-d') < date('Y-m-d', strtotime($day->date))) disabled @endif data-schedule="{{ $day->id }}">{{ ucfirst($day->status) }}<span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                    @foreach ($status as $st)
+                                        @if($st !== $day->status)<li><a class="dropdown-item" data-toggle="modal" data-target="#openActionModal" onclick="changeStatus({{$day->id}}, '{{ $st }}')">{{ucfirst($st)}}</a></li>@endif
+                                    @endforeach
+                                </ul>
+                            @else
+                                <button type="button" class="btn @if($day->status === 'failed') btn-danger @else btn-success @endif"  disabled>{{ ucfirst($day->status) }} <i class="fa fa-lock"></i>
+                                </button>
+                            @endif
+                        </div>
+                    </td>
+                    <td>{{ $day->remarks }}</td>
+                    <td>{{ $day->user->name ?? null }}</td>
+                    <td>{{ $day->reason_for_refuse }}</td>
+                    <td><i class="fa fa-{{$day->invoiced?'check':'times'}} text-{{$day->invoiced?'success':'danger'}}"></i></td>
+                    <td>-</td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
 
-    <!-- Modal -->
-    <div class="modal fade" id="openSchedulingsModal" tabindex="-1" role="dialog" aria-labelledby="openSchedulingsModalTitle"
-        aria-hidden="true" data-backdrop="static">
-        <div class="modal-dialog modal-lg" role="document">
+     <!-- Modal -->
+     <div class="modal fade" id="openActionModal" tabindex="-1" role="dialog" aria-labelledby="openSchedulingsModalTitle"
+     aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Scheduling</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">Are you sure you want to <span class="status"></span> schedule?</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
+                    <input type="hidden" id="id">
+                    <input type="hidden" id="status">
+                    <div class="form-group">
+                        <label for="remarks">Remarks</label>
+                        <textarea id="remarks" class="form-control"></textarea>
+                    </div>
 
+                    <div class="form-group d-none" id="refuseDiv">
+                        <label for="reasonForRefuse">Reason For Refuse</label>
+                        <textarea id="reasonForRefuse" class="form-control"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="text-center">
+                            <button class="btn btn-info" id="updateStatus">Update Status</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 @endsection
 @section('js')
+    <script src="{{ url('') }}/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
     <script>
         function confirmAppointment() {
             $('#scheduling_div').removeClass('d-none')
@@ -465,60 +532,52 @@
                 }
             }
         })
+        $('.dataTable').DataTable()
 
-        function openSchdulings(id) {
-            let url = `{{ url('/schedulings') }}/${id}`
-            let status = ['assign', 'failed', 'approve']
+        function changeStatus(id, status) {
+            $('#reasonForRefuse').val('')
+            $('#remarks').val('')
+            $('#id').val('')
+            $('#status').val('')
+            if(status === 'failed') {
+                if($('#refuseDiv').hasClass('d-none')){
+                    $('#refuseDiv').removeClass('d-none')
+                }
+            }else {
+                if(!$('#refuseDiv').hasClass('d-none')){
+                    $('#refuseDiv').addClass('d-none')
+                }
+            }
+            $('#id').val(id)
+            $('#status').val(status)
+            $('.status').text(status)
+        }
+
+        $(document).on('click', '#updateStatus', function() {
+            let data = {}
+            data._token = '{{ csrf_token() }}'
+            data.id = $('#id').val()
+            data.status = $('#status').val()
+            data.remarks = $('#remarks').val()
+            if(data.status === 'failed') {
+                data.reason_for_refuse = $('#reasonForRefuse').val()
+            }
+            let url = '{{ url("/scheduling/update/") }}/'+data.id
             $.ajax({
                 url: url,
-                type: 'GET',
-                beforeSend: function() {
-                    $('#openSchedulingsModal .modal-body').html(`<div class="text-center">
-                        <i class="fa fa-spin fa-spinner"></i> Loading
-                    </div>`)
-                },
-                success: function(data) {
-                    let table = `
-                        <table class="table table-striped table-bordered dataTable no-footer">
-                            <thead>
-                                <tr>
-                                    <th>Sn#</th>
-                                    <th>Product</th>
-                                    <th>Care Giver</th>
-                                    <th>Customer</th>
-                                    <th>Service Dates</th>
-                                    <th>Expected Starting Time</th>
-                                    <th>Expected Hours</th>
-                                    <th>Work Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${data.scheduling_days.map((d, i) => {
-                                    return `
-                                        <tr>
-                                            <td>${i+1}</td>
-                                            <td>{{ $order->products[0]->product->name }}</td>
-                                            <td>${data.caregiver.first_name} ${data.caregiver.last_name}</td>
-                                            <td>{{ $order->customer->first_name }} {{ $order->customer->last_name ?? null }}</td>
-                                            <td>${new Date(d.date).toDateString()}</td>
-                                            <td>{{ $order->scheduled_days[0]->time ?? null }}</td>
-                                            <td>{{ $order->products[0]->product->no_of_hrs_per_day }}</td>
-                                            <td><div class="input-group-btn">
-														<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">${status.filter(s => s === d.status).join('')} <span class="caret"></span>
-														</button>
-														<ul class="dropdown-menu dropdown-menu-right" role="menu">
-                                                            ${status.map(s => s !== d.status ? `<li><a class="dropdown-item" href="#">${s}</a>
-															</li>`:'').join('')}
-														</ul>
-													</div>
-                                            </td>
-                                        </tr>`
-                                }).join('')}
-                            </tbody>
-                        </table>`
-                        $('#openSchedulingsModal .modal-body').html(table)
+                data,
+                type: 'POST',
+                success: function(response) {
+                    if(response.success) {
+                        let button = $('[data-schedule="'+data.id+'"]')
+                        button.removeClass('btn-warning')
+                        button.addClass(data.status === 'failed' ? 'btn-danger' : 'btn-success')
+                        button.attr('disabled', true)
+                        button.html(response.status+' <i class="fa fa-lock"></i>')
+                        $('#openActionModal').modal('hide')
+                    }
                 }
             })
-        }
+        })
     </script>
 @endsection

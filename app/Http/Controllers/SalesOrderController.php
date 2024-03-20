@@ -103,10 +103,12 @@ class SalesOrderController extends Controller
      */
     public function show(string $id)
     {
+        $dataTable = true;
         $order = SalesOrder::findOrFail($id);
         $data['order'] = $order;
         $start_date = $order->start_date;
         $end_date = $order->end_date ?? $order->start_date;
+        $data['status'] = ['assign', 'failed', 'approve'];
 
         $available_caregivers = Caregiver::whereDoesntHave('sales_orders', function ($query) use ($start_date, $end_date, $id) {
             $query->where(function ($query) use ($start_date, $end_date, $id) {
@@ -282,10 +284,15 @@ class SalesOrderController extends Controller
         }
     }
 
-    public function fetchSchedulings($id)
+    public function updateScheduling(Request $request, $id)
     {
-        $scheduling = Scheduling::with('scheduling_days', 'caregiver')->findOrFail($id);
-        return response()->json($scheduling);
+        $schedule = ScheduledDay::findOrFail($id);
+        $schedule->remarks = $request->remarks ?? null;
+        $schedule->reviewed_by = Auth()->user()->id;
+        $schedule->reason_for_refuse = $request->reason_for_refuse ?? null;
+        $schedule->status = $request->status;
+        $schedule->save();
+        return response()->json(['success' => true, 'status' => ucfirst($schedule->status)]);
     }
 
     /**

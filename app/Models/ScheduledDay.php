@@ -9,9 +9,13 @@ use Illuminate\Database\Eloquent\Model;
 class ScheduledDay extends Model
 {
     use HasFactory;
-    protected $fillable = ['scheduling_id', 'sales_order_id', 'day', 'date', 'status'];
+    protected $fillable = ['scheduling_id', 'sales_order_id', 'day', 'date', 'status', 'reason_for_refuse', 'remarks', 'invoiced', 'reviewed_by'];
 
-    public function schedule()  {
+    public function scheduling()  {
         return $this->belongsTo(Scheduling::class);
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class, 'reviewed_by', 'id');
     }
 }
