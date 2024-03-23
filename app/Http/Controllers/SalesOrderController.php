@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Caregiver;
 use App\Models\Customer;
+use App\Models\Payslip;
 use App\Models\Product;
 use App\Models\Setting;
 use App\Models\SalesOrder;
@@ -291,7 +292,21 @@ class SalesOrderController extends Controller
         $schedule->reviewed_by = Auth()->user()->id;
         $schedule->reason_for_refuse = $request->reason_for_refuse ?? null;
         $schedule->status = $request->status;
+        if($request->status === 'approve') {
+            // check if pay slip is generated for this caregiver or not
+            $payslip = Payslip::where(['status' => 'pending', 'caregiver_id' => $schedule->scheduling->caregiver_id])->first();
+            if($payslip) {
+                $schedule->payslip_id = $payslip->id;
+            }else{
+                $newpayslip = Payslip::create([
+                    'caregiver_id' => $schedule->scheduling->caregiver_id,
+                    'invoice_no' => env('INVOICE_PREFIX').'-'.date('YmdHis')
+                ]);
+                $schedule->payslip_id = $newpayslip->id;
+            }
+        }
         $schedule->save();
+
         return response()->json(['success' => true, 'status' => ucfirst($schedule->status)]);
     }
 

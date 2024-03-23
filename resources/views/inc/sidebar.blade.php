@@ -97,10 +97,7 @@
                     <a><i class="fa fa-clone"></i> {{ __('Pay Slips') }} <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                         @can('payslip-list')
-                            <li><a href="#">{{ __('Manage Pay Slips') }}</a></li>
-                        @endcan
-                        @can('payslip-create')
-                            <li><a href="#">{{ __('Create Pay Slip') }}</a></li>
+                            <li><a href="{{ route('payslips.index') }}">{{ __('Manage Pay Slips') }}</a></li>
                         @endcan
                     </ul>
                 </li>

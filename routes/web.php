@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\{ProductController, CustomerController,CaregiverController,InvoiceController,QuotationController, SalesOrderController};
+use App\Http\Controllers\{ProductController, CustomerController,CaregiverController,InvoiceController, PaySlipController, QuotationController, SalesOrderController};
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\PublicCaregiver;
 use App\Http\Controllers\SettingController;
@@ -43,6 +43,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('quotations', QuotationController::class);
     Route::resource('orders', SalesOrderController::class);
     Route::resource('settings', SettingController::class);
+    Route::resource('payslips', PaySlipController::class);
     Route::patch('/orders/scheduling/{id}', [SalesOrderController::class, 'schedule'])->name('orders.schedule');
     Route::get('/get-product-price/{id}', [ProductController::class, 'getProductPrice']);
     Route::get('/orders/download/{order_no}', [SalesOrderController::class, 'downloadSalesOrder'])->name('download.order');

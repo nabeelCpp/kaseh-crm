@@ -439,8 +439,8 @@
                     <td>{{ $day->remarks }}</td>
                     <td>{{ $day->user->name ?? null }}</td>
                     <td>{{ $day->reason_for_refuse }}</td>
-                    <td><i class="fa fa-{{$day->invoiced?'check':'times'}} text-{{$day->invoiced?'success':'danger'}}"></i></td>
-                    <td>-</td>
+                    <td><i class="fa fa-{{$day->payslip_id?'check':'times'}} text-{{$day->payslip_id?'success':'danger'}}"></i></td>
+                    <td>{{ $day->payslip_id ? $day->payslip->invoice_no : '-' }}</td>
                 </tr>
             @endforeach
         </tbody>
@@ -563,10 +563,15 @@
                 data.reason_for_refuse = $('#reasonForRefuse').val()
             }
             let url = '{{ url("/scheduling/update/") }}/'+data.id
+            let buttonText = $(this).text();
             $.ajax({
                 url: url,
                 data,
                 type: 'POST',
+                beforeSend: function(){
+                    $(this).html('<i class="fa fa-spin fa-spinner"></i>')
+                    $(this).attr('disabled', true)
+                },
                 success: function(response) {
                     if(response.success) {
                         let button = $('[data-schedule="'+data.id+'"]')
@@ -576,6 +581,11 @@
                         button.html(response.status+' <i class="fa fa-lock"></i>')
                         $('#openActionModal').modal('hide')
                     }
+                },
+                complete: function() {
+                    $(this).html(buttonText)
+                    $(this).attr('disabled', false)
+                    window.location.reload()
                 }
             })
         })

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Payslip;
 use Illuminate\Http\Request;
 
 class PaySlipController extends Controller
@@ -24,7 +25,9 @@ class PaySlipController extends Controller
      */
     public function index()
     {
-        //
+        $title = "Pay Slips";
+        $data = Payslip::all();
+        return view('payslips.index', compact('data', 'title'));
     }
 
     /**
@@ -48,7 +51,9 @@ class PaySlipController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $data = Payslip::findOrFail($id);
+        $title = "Payslip Details ".$data->invoice_no;
+        return view('payslips.show', compact('data', 'title'));
     }
 
     /**
@@ -64,7 +69,11 @@ class PaySlipController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $data = Payslip::findOrFail($id);
+        $data->status = $request->status;
+        $data->paid_at = date('Y-m-d H:i:s');
+        $data->save();
+        return redirect()->back()->with('success', 'Payslip status changed to paid successfully!');
     }
 
     /**
